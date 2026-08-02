@@ -1,0 +1,20 @@
+---
+import { site, waLink } from '../site.config';
+import Icon from './Icon.astro';
+import WhatsAppIcon from './WhatsAppIcon.astro';
+---
+<a class="wa-float" href={waLink()} target="_blank" rel="noopener"
+   aria-label={`Chat with ${site.name} on WhatsApp`}>
+  <WhatsAppIcon size={30} detailed />
+</a>
+
+<nav class="mobile-bar" aria-label="Quick contact">
+  <a class="call" href={`tel:${site.phone}`}>
+    <Icon name="phone" size={20} />
+    Call Now
+  </a>
+  <a class="wa" href={waLink()} target="_blank" rel="noopener">
+    <WhatsAppIcon size={20} />
+    WhatsApp
+  </a>
+</nav>

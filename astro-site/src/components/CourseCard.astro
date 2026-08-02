@@ -1,0 +1,28 @@
+---
+import { site, waLink, rupees } from '../site.config';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props { course: CollectionEntry<'courses'> }
+const { course } = Astro.props;
+const d = course.data;
+---
+<article class={`course reveal${d.featured ? ' course--featured' : ''}`}>
+  {d.featured && <span class="course__flag">Most enrolled</span>}
+  <p class="course__exam">{d.exam}</p>
+  <h3><a href={`/courses/${course.id}/`}>{d.title}</a></h3>
+  <div class="course__meta">
+    <span class="chip">{d.duration}</span>
+    <span class="chip">{d.timing}</span>
+    <span class="chip chip--mode">{d.mode}</span>
+  </div>
+  <ul class="course__list">
+    {d.inclusions.map((line) => <li>{line}</li>)}
+  </ul>
+  <div class="course__fee">
+    <span class="amt">{rupees(d.fee)}</span>
+    {d.instalments && <span class="note">{d.instalments}</span>}
+  </div>
+  <a class="btn btn--wa btn--block"
+     href={waLink(`Hi, I want details of the ${d.title} batch at ${site.name}.`)}
+     target="_blank" rel="noopener">Ask about this batch</a>
+</article>

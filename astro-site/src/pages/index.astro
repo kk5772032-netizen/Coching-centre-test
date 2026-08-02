@@ -1,0 +1,71 @@
+---
+import { getCollection } from 'astro:content';
+import { site } from '../site.config';
+import Base from '../layouts/Base.astro';
+import Hero from '../components/Hero.astro';
+import UrgencyBanner from '../components/UrgencyBanner.astro';
+import CourseCard from '../components/CourseCard.astro';
+import WhyUs from '../components/WhyUs.astro';
+import Gallery from '../components/Gallery.astro';
+import FacultyCard from '../components/FacultyCard.astro';
+import Results from '../components/Results.astro';
+import Testimonials from '../components/Testimonials.astro';
+import EnquiryForm from '../components/EnquiryForm.astro';
+import Location from '../components/Location.astro';
+import Faq from '../components/Faq.astro';
+
+const courses = (await getCollection('courses')).sort((a, b) => a.data.order - b.data.order);
+const faculty = (await getCollection('faculty')).sort((a, b) => a.data.order - b.data.order);
+
+const fees = courses.map((c) => c.data.fee);
+const feeRange = `₹${Math.min(...fees).toLocaleString('en-IN')} – ₹${Math.max(...fees).toLocaleString('en-IN')}`;
+---
+<Base
+  title={`Best SSC CGL Coaching in ${site.area}, Delhi | ${site.name}`}
+  description={`${site.name} — SSC CGL, CHSL, CPO & Delhi Police coaching in ${site.area}, Delhi. ${site.stats.lastYearSelections} selections in ${site.stats.resultYear}, batch size capped at ${site.stats.batchSizeCap}, ${site.metroWalkMinutes} min from ${site.metro}. Book a free demo class.`}
+>
+  <Hero />
+  <UrgencyBanner />
+
+  <section class="section" id="courses">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="eyebrow">Batches &amp; Fees</p>
+        <h2>Choose your batch</h2>
+        <p class="lede">Every batch includes printed material, weekly tests and daily doubt sessions. Fees below are complete — there is no separate material or test-series charge.</p>
+      </div>
+
+      <div class="cards" id="fees">
+        {courses.map((course) => <CourseCard course={course} />)}
+      </div>
+
+      <p class="fee-note reveal">
+        <strong>Fee range: {feeRange}.</strong> Instalments available on every batch above ₹20,000.
+        Sibling and repeat-student discount of 10%. Fees are inclusive of study material and test
+        series; there are no hidden charges.
+      </p>
+    </div>
+  </section>
+
+  <WhyUs />
+  <Gallery />
+
+  <section class="section" id="faculty">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="eyebrow">The people who will teach you</p>
+        <h2>Faculty</h2>
+        <p class="lede">Come on any demo day and sit in their class before you decide. We do not rotate teachers mid-session — the faculty you meet on day one finishes the course.</p>
+      </div>
+      <div class="faculty">
+        {faculty.map((teacher) => <FacultyCard teacher={teacher} />)}
+      </div>
+    </div>
+  </section>
+
+  <Results />
+  <Testimonials />
+  <EnquiryForm />
+  <Location />
+  <Faq />
+</Base>

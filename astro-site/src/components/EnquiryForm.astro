@@ -1,0 +1,186 @@
+---
+import { site } from '../site.config';
+import WhatsAppIcon from './WhatsAppIcon.astro';
+import Icon from './Icon.astro';
+
+interface Props { presetCourse?: string }
+const { presetCourse } = Astro.props;
+const bullets = [
+  'Two free demo classes, no advance payment',
+  'Parents are welcome to sit in and meet the faculty',
+  'We will tell you honestly which batch suits your level',
+  'No calls from unknown numbers, no spam',
+];
+---
+<section class="section enquiry" id="enquiry">
+  <div class="wrap enquiry__grid">
+    <div class="enquiry__side reveal">
+      <p class="eyebrow">Free demo class</p>
+      <h2>Sit in a real class before you pay anything</h2>
+      <p>Fill this in and we will confirm your demo slot on WhatsApp, usually within a couple of hours during working hours.</p>
+      <ul>
+        {bullets.map((b) => (
+          <li><Icon name="tick" size={20} /><span>{b}</span></li>
+        ))}
+      </ul>
+    </div>
+
+    <div class="reveal">
+      <form class="form" id="enquiryForm" novalidate data-wa={site.whatsapp}
+            data-institute={site.name} data-course={presetCourse ?? ''}>
+        <h3>Book your free demo</h3>
+        <p class="form__note">Takes 30 seconds. Opens WhatsApp with your details filled in.</p>
+
+        <div class="field">
+          <label for="f-name">Student name <span class="req" aria-hidden="true">*</span></label>
+          <input type="text" id="f-name" name="name" autocomplete="name" placeholder="e.g. Anjali Verma" aria-describedby="e-name" required />
+          <p class="error" id="e-name">Please enter your name.</p>
+        </div>
+
+        <div class="field">
+          <label for="f-mobile">Mobile number (WhatsApp) <span class="req" aria-hidden="true">*</span></label>
+          <input type="tel" id="f-mobile" name="mobile" inputmode="numeric" maxlength="10"
+                 autocomplete="tel-national" placeholder="10-digit number" aria-describedby="e-mobile h-mobile" required />
+          <p class="hint" id="h-mobile">We will message you here. No calls from unknown numbers.</p>
+          <p class="error" id="e-mobile">Enter a valid 10-digit Indian mobile number.</p>
+        </div>
+
+        <div class="field--half">
+          <div class="field">
+            <label for="f-exam">Exam you are preparing for <span class="req" aria-hidden="true">*</span></label>
+            <select id="f-exam" name="exam" aria-describedby="e-exam" required>
+              <option value="">Select exam</option>
+              <option>SSC CGL</option>
+              <option>SSC CHSL</option>
+              <option>SSC MTS</option>
+              <option>SSC CPO</option>
+              <option>Delhi Police</option>
+              <option>Not decided yet</option>
+            </select>
+            <p class="error" id="e-exam">Please choose an exam.</p>
+          </div>
+          <div class="field">
+            <label for="f-status">You are currently <span class="req" aria-hidden="true">*</span></label>
+            <select id="f-status" name="status" aria-describedby="e-status" required>
+              <option value="">Select one</option>
+              <option>Class 11</option>
+              <option>Class 12</option>
+              <option>Graduate</option>
+              <option>Working</option>
+              <option>Dropper / Repeater</option>
+            </select>
+            <p class="error" id="e-status">Please choose your current status.</p>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="f-timing">Preferred batch timing <span class="req" aria-hidden="true">*</span></label>
+          <select id="f-timing" name="timing" aria-describedby="e-timing" required>
+            <option value="">Select timing</option>
+            <option>Morning (7 AM – 10 AM)</option>
+            <option>Afternoon (11 AM – 2 PM)</option>
+            <option>Evening (5 PM – 8 PM)</option>
+            <option>Weekend only</option>
+          </select>
+          <p class="error" id="e-timing">Please choose a batch timing.</p>
+        </div>
+
+        <div class="field">
+          <label for="f-message">Anything you want to ask? <span style="font-weight:400;color:#54606f">(optional)</span></label>
+          <textarea id="f-message" name="message" placeholder="e.g. I am weak in Maths, which batch is right for me?"></textarea>
+        </div>
+
+        <button class="btn btn--primary btn--block" type="submit">
+          <WhatsAppIcon size={20} />
+          Send on WhatsApp
+        </button>
+
+        <p class="privacy">Your details go only to the institute's WhatsApp. Nothing is stored on this website.</p>
+
+        <noscript>
+          <p class="privacy" style="color:#b3261e;font-weight:600">
+            This form needs JavaScript. Please call <a href={`tel:${site.phone}`}>{site.phoneDisplay}</a>
+            or message us on WhatsApp instead.
+          </p>
+        </noscript>
+      </form>
+
+      <div class="form__success" id="formSuccess" role="status" aria-live="polite">
+        <h3>WhatsApp is opening&hellip;</h3>
+        <p id="successName">Your details are ready in a WhatsApp message — just press send.</p>
+        <a class="btn btn--wa btn--block" id="successLink" href="#" target="_blank" rel="noopener">Open WhatsApp manually</a>
+        <p class="privacy">
+          <button type="button" id="resetForm" style="background:none;border:0;color:#12263f;font-weight:700;text-decoration:underline;cursor:pointer;font-size:14px;min-height:44px">Send another enquiry</button>
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const form = document.getElementById('enquiryForm') as HTMLFormElement | null;
+  if (form) {
+    const success = document.getElementById('formSuccess')!;
+    const successLink = document.getElementById('successLink') as HTMLAnchorElement;
+    const successName = document.getElementById('successName')!;
+    const mobileInput = document.getElementById('f-mobile') as HTMLInputElement;
+    const wa = form.dataset.wa!;
+    const institute = form.dataset.institute!;
+    const presetCourse = form.dataset.course || '';
+
+    const val = (id: string) => (document.getElementById(id) as HTMLInputElement).value.trim();
+    const setInvalid = (id: string, invalid: boolean) => {
+      const el = document.getElementById(id)!;
+      el.closest('.field')!.classList.toggle('is-invalid', invalid);
+      el.setAttribute('aria-invalid', String(invalid));
+      return !invalid;
+    };
+
+    mobileInput.addEventListener('input', function () {
+      this.value = this.value.replace(/\D/g, '').slice(0, 10);
+      if (/^[6-9]\d{9}$/.test(this.value)) setInvalid('f-mobile', false);
+    });
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const name = val('f-name'), mobile = val('f-mobile'), exam = val('f-exam');
+      const status = val('f-status'), timing = val('f-timing'), message = val('f-message');
+
+      let ok = true;
+      ok = setInvalid('f-name', name.length < 2) && ok;
+      ok = setInvalid('f-mobile', !/^[6-9]\d{9}$/.test(mobile)) && ok;
+      ok = setInvalid('f-exam', exam === '') && ok;
+      ok = setInvalid('f-status', status === '') && ok;
+      ok = setInvalid('f-timing', timing === '') && ok;
+      if (!ok) {
+        form.querySelector<HTMLElement>('.field.is-invalid input, .field.is-invalid select')?.focus();
+        return;
+      }
+
+      const lines = [
+        `Hi ${institute}, I want to book a free demo class.`, '',
+        `Name: ${name}`, `Mobile: ${mobile}`, `Exam: ${exam}`,
+        `Currently: ${status}`, `Preferred timing: ${timing}`,
+      ];
+      if (presetCourse) lines.push(`Batch: ${presetCourse}`);
+      if (message) lines.push(`Message: ${message}`);
+      lines.push('', '(Sent from the website)');
+
+      const url = `https://wa.me/${wa}?text=${encodeURIComponent(lines.join('\n'))}`;
+      successLink.href = url;
+      successName.textContent = `${name.split(' ')[0]}, your details are ready in a WhatsApp message - just press send. If the tab did not open, tap the button below.`;
+      window.open(url, '_blank', 'noopener');
+      form.style.display = 'none';
+      success.classList.add('is-shown');
+      success.scrollIntoView({ block: 'center' });
+    });
+
+    document.getElementById('resetForm')?.addEventListener('click', () => {
+      form.reset();
+      form.style.display = '';
+      success.classList.remove('is-shown');
+      form.querySelectorAll('.is-invalid').forEach((f) => f.classList.remove('is-invalid'));
+      (document.getElementById('f-name') as HTMLInputElement).focus();
+    });
+  }
+</script>

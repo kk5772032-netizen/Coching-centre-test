@@ -1,0 +1,47 @@
+---
+import { site } from '../site.config';
+import Crest from './Crest.astro';
+import Icon from './Icon.astro';
+---
+<header class="header">
+  <div class="wrap header__bar">
+    <a class="brand" href="/" aria-label={`${site.name} — home`}>
+      <Crest class="brand__mark" />
+      <span>
+        <span class="brand__name">{site.name}</span>
+        <span class="brand__sub">SSC &middot; {site.area}</span>
+      </span>
+    </a>
+
+    <nav class="nav" aria-label="Main">
+      <ul>
+        {site.nav.map((item) => <li><a href={item.href}>{item.label}</a></li>)}
+      </ul>
+    </nav>
+
+    <a class="header__call" href={`tel:${site.phone}`}>
+      <Icon name="phone" size={18} />
+      <span class="lbl">{site.phoneDisplay}</span>
+      <span class="sr-only">Call the institute</span>
+    </a>
+
+    <button class="hamburger" id="menuBtn" type="button" aria-expanded="false"
+            aria-controls="mobileNav" aria-label="Open menu">
+      <Icon name="menu" size={24} />
+    </button>
+  </div>
+
+  <nav class="mobile-nav" id="mobileNav" aria-label="Mobile">
+    <div class="wrap">
+      {site.nav.map((item) => <a href={item.href}>{item.label}</a>)}
+    </div>
+  </nav>
+
+  <noscript>
+    <nav class="mobile-nav is-open" aria-label="Main (no JavaScript)">
+      <div class="wrap">
+        {site.nav.map((item) => <a href={item.href}>{item.label}</a>)}
+      </div>
+    </nav>
+  </noscript>
+</header>

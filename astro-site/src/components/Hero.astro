@@ -1,0 +1,70 @@
+---
+import { site, waLink } from '../site.config';
+import Icon from './Icon.astro';
+import WhatsAppIcon from './WhatsAppIcon.astro';
+const s = site.stats;
+---
+<section class="hero" id="top">
+  <div class="wrap hero__grid">
+    <div>
+      <p class="hero__since">{site.area} &middot; Since {site.foundedYear}</p>
+      <h1>SSC CGL &amp; CHSL Coaching in <span class="accent">{site.area}</span>, Delhi</h1>
+      <p class="hero__tag">Classroom and online batches for SSC CGL, CHSL, MTS, CPO and Delhi Police — taught by faculty who have cleared these exams themselves.</p>
+
+      <div class="hero__cta">
+        <a class="btn btn--primary" href="#enquiry">
+          <Icon name="calendar" size={19} />
+          Book Free Demo Class
+        </a>
+        <a class="btn btn--wa" href={waLink()} target="_blank" rel="noopener">
+          <WhatsAppIcon size={20} detailed />
+          WhatsApp Us
+        </a>
+      </div>
+
+      <div class="trust">
+        <div><b data-count={s.yearsRunning} data-suffix="+">{s.yearsRunning}+</b><span>Years running</span></div>
+        <div><b data-count={s.studentsTaught} data-suffix="+">{s.studentsTaught.toLocaleString('en-IN')}+</b><span>Students taught</span></div>
+        <div><b data-count={s.totalSelections} data-suffix="+">{s.totalSelections}+</b><span>Total selections</span></div>
+        <div><b>{s.googleRating}&#9733;</b><span>Google rating</span></div>
+      </div>
+    </div>
+
+    <aside class="proof reveal" aria-label="Result highlight">
+      <div class="proof__head">
+        <p class="eyebrow eyebrow--dark">Result Declaration</p>
+        <p class="proof__session">Session {s.resultYear}&ndash;{String(s.resultYear + 1).slice(2)}</p>
+      </div>
+
+      <div class="proof__figure">
+        <div class="proof__num" data-count={s.lastYearSelections}>{s.lastYearSelections}</div>
+        <div>
+          <div class="proof__rule" aria-hidden="true"></div>
+          <p class="proof__label">selections in<br />SSC CGL {s.resultYear}</p>
+        </div>
+      </div>
+
+      <p class="proof__sub">from a batch of {s.lastYearAppeared} students who appeared</p>
+
+      <ul class="proof__list">
+        <li><span>Highest rank</span> <b>AIR {s.bestRank}</b></li>
+        <li><span>Delhi Police {s.resultYear}</span> <b>38 selected</b></li>
+        <li><span>Batch size cap</span> <b>{s.batchSizeCap} students</b></li>
+      </ul>
+
+      <svg class="proof__seal" viewBox="0 0 96 96" role="img" aria-label={`Result declared ${s.resultYear}`}>
+        <defs><path id="sealArc" d="M48 48m-33 0a33 33 0 1 1 66 0a33 33 0 1 1-66 0"/></defs>
+        <circle cx="48" cy="48" r="45" fill="none" stroke="#6d1f28" stroke-width="1.2" opacity=".45"/>
+        <circle cx="48" cy="48" r="41" fill="none" stroke="#6d1f28" stroke-width="2.4"/>
+        <circle cx="48" cy="48" r="27" fill="none" stroke="#6d1f28" stroke-width="1.2" opacity=".6"/>
+        <text class="proof__sealtext" fill="#6d1f28">
+          <textPath href="#sealArc" startOffset="50%" text-anchor="middle">RESULT DECLARED &#9733; {s.resultYear} &#9733;</textPath>
+        </text>
+        <svg x="33" y="31" width="30" height="30" viewBox="0 0 64 64" opacity=".9">
+          <path d="M14 41 28.4 19.5 36 31l4.6-6.4L50 41z" fill="#6d1f28"/>
+          <path d="M15 45.5h34v2.2c-5.4-1.9-11.6-1.6-17 1-5.4-2.6-11.6-2.9-17-1z" fill="#6d1f28"/>
+        </svg>
+      </svg>
+    </aside>
+  </div>
+</section>

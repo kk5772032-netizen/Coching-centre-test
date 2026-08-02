@@ -1,0 +1,728 @@
+/* ==========================================================================
+   1. DESIGN TOKENS — colours, type scale, 8px spacing scale
+   Change the brand colour in one place: --navy and --amber.
+   ========================================================================== */
+:root{
+  --navy:#12263f;          /* primary — headers, dark blocks */
+  --navy-800:#0c1b2e;      /* darker navy for footer */
+  --navy-600:#1d3a5c;
+  --amber:#e0901c;         /* accent — CTAs only */
+  --amber-light:#f5b843;   /* accent on dark backgrounds */
+  --amber-dark:#96590c;    /* accent on light backgrounds — passes AA on cream */
+  --maroon:#6d1f28;        /* used sparingly on the results band */
+  --cream:#faf6ef;         /* page background — warmer than white */
+  --paper:#ffffff;
+  --ink:#1a1a1a;           /* body text — never pure black */
+  --muted:#54606f;         /* secondary text, passes AA on cream */
+  --line:#e3dcd0;          /* hairline borders */
+  --ok:#1e7a44;
+  --err:#b3261e;
+
+  --s1:8px;  --s2:16px; --s3:24px; --s4:32px;
+  --s5:40px; --s6:56px;  --s7:72px; --s8:96px;
+
+  --radius:10px;
+  --maxw:1180px;
+  --shadow:0 1px 2px rgba(18,38,63,.06), 0 8px 24px rgba(18,38,63,.07);
+
+  --font-head:"Fraunces", Georgia, "Times New Roman", serif;
+  --font-body:"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+/* ==========================================================================
+   2. BASE
+   ========================================================================== */
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth; -webkit-text-size-adjust:100%}
+body{
+  margin:0;
+  background:var(--cream);
+  color:var(--ink);
+  font-family:var(--font-body);
+  font-size:17px;          /* above the 16px floor — no zooming needed */
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+}
+img,svg{max-width:100%; height:auto; display:block}
+a{color:var(--navy-600)}
+h1,h2,h3,h4{font-family:var(--font-head); line-height:1.15; margin:0 0 var(--s2); letter-spacing:-.01em; font-weight:700}
+h1{font-size:clamp(30px,6.4vw,52px)}
+h2{font-size:clamp(26px,4.6vw,38px)}
+h3{font-size:clamp(19px,2.6vw,22px)}
+p{margin:0 0 var(--s2)}
+ul{margin:0; padding:0; list-style:none}
+
+.wrap{width:100%; max-width:var(--maxw); margin-inline:auto; padding-inline:var(--s3)}
+/* Stop anchor links from landing underneath the sticky header */
+section[id],div[id]{scroll-margin-top:84px}
+.section{padding-block:var(--s7)}
+.section--tight{padding-block:var(--s6)}
+.eyebrow{
+  font-size:13px; font-weight:700; letter-spacing:.13em; text-transform:uppercase;
+  color:var(--amber-dark); margin:0 0 var(--s1);
+}
+.band-navy .eyebrow,.enquiry .eyebrow{color:var(--amber-light)}
+.eyebrow--dark{color:var(--amber-dark)}
+.lede{font-size:18px; color:var(--muted); max-width:62ch}
+.section-head{max-width:62ch; margin-bottom:var(--s5)}
+
+/* Subtle paper grain on the light sections — a 60-byte tiled SVG, not an image file */
+body{
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='80' height='80' filter='url(%23n)' opacity='.035'/%3E%3C/svg%3E");
+}
+
+/* Depth: cards lift a little on hover, so the page feels responsive to the cursor */
+.course,.teacher,.quote,.gallery figure,.topper{
+  transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+}
+@media (hover:hover){
+  .course:hover,.teacher:hover,.quote:hover,.gallery figure:hover{
+    transform:translateY(-4px);
+    box-shadow:0 3px 6px rgba(18,38,63,.07), 0 16px 34px rgba(18,38,63,.13);
+  }
+  .topper:hover{transform:translateY(-4px); box-shadow:0 14px 30px rgba(0,0,0,.28)}
+  .chip{transition:background-color .15s ease}
+  .why__item{transition:background-color .18s ease, border-color .18s ease}
+  .why__item:hover{background:rgba(255,255,255,.09); border-color:rgba(240,169,46,.4)}
+}
+
+/* Nav underline grows from the left rather than just appearing */
+.nav a{position:relative}
+.nav a::after{
+  content:""; position:absolute; left:0; right:100%; bottom:6px; height:2px;
+  background:var(--amber); transition:right .22s ease;
+}
+.nav a:hover::after,.nav a:focus-visible::after{right:0}
+
+/* Accessibility: visible focus ring everywhere */
+:focus-visible{outline:3px solid var(--amber); outline-offset:3px; border-radius:4px}
+.skip{
+  position:absolute; left:-9999px; top:0; z-index:200;
+  background:var(--amber); color:var(--navy); padding:12px 20px; font-weight:700;
+}
+.skip:focus{left:8px; top:8px}
+.sr-only{
+  position:absolute; width:1px; height:1px; padding:0; margin:-1px;
+  overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; border:0;
+}
+
+/* ==========================================================================
+   3. BUTTONS — every tap target is at least 44px tall
+   ========================================================================== */
+.btn{
+  display:inline-flex; align-items:center; justify-content:center; gap:10px;
+  min-height:52px; padding:14px 26px;
+  font-family:var(--font-body); font-size:16px; font-weight:700; line-height:1.2;
+  border:2px solid transparent; border-radius:var(--radius);
+  text-decoration:none; cursor:pointer; text-align:center;
+  transition:transform .12s ease, background-color .15s ease, box-shadow .15s ease;
+}
+.btn:active{transform:translateY(1px)}
+.btn--primary{background:var(--amber); color:#241300; box-shadow:0 4px 0 #a8650d}
+.btn--primary:hover{background:var(--amber-light)}
+.btn--wa{background:#157a45; color:#fff; box-shadow:0 4px 0 #0d5730}
+.btn--wa:hover{background:#1a8f52}
+.btn--ghost{background:transparent; color:#fff; border-color:rgba(255,255,255,.55)}
+.btn--ghost:hover{background:rgba(255,255,255,.1)}
+.btn--outline{background:var(--paper); color:var(--navy); border-color:var(--navy)}
+.btn--outline:hover{background:var(--navy); color:#fff}
+.btn--block{width:100%}
+.btn svg{flex:none}
+
+/* ==========================================================================
+   4. HEADER + NAV
+   ========================================================================== */
+.header{
+  position:sticky; top:0; z-index:60;
+  background:var(--navy);
+  border-bottom:3px solid var(--amber);
+}
+.header__bar{display:flex; align-items:center; gap:var(--s2); min-height:66px}
+.brand{display:flex; align-items:center; gap:10px; text-decoration:none; margin-right:auto;
+  min-height:44px; padding:4px 2px}
+.brand__mark{width:42px; height:42px; flex:none; display:block}
+.footer .brand__mark{width:46px; height:46px}
+.brand__name{font-family:var(--font-head); font-weight:700; font-size:18px; color:#fff;
+  line-height:1.1; white-space:nowrap}
+.brand__sub{display:block; font-family:var(--font-body); font-size:11px; font-weight:600;
+  letter-spacing:.09em; text-transform:uppercase; color:var(--amber-light); white-space:nowrap}
+/* Very narrow phones (360px and under): drop the sub-line so the header stays one row */
+@media (max-width:400px){
+  .brand__sub{display:none}
+  .brand__mark{width:36px; height:36px}
+}
+
+.nav{display:none}
+.nav ul{display:flex; align-items:center; gap:var(--s3)}
+.nav a{
+  color:#dfe7f0; text-decoration:none; font-size:15px; font-weight:600;
+  padding:10px 2px 12px; display:inline-block;
+}
+.nav a:hover{color:#fff}
+
+.header__call{
+  display:inline-flex; align-items:center; gap:8px;
+  min-height:44px; padding:8px 14px; border-radius:8px;
+  background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.22);
+  color:#fff; text-decoration:none; font-weight:700; font-size:15px; white-space:nowrap;
+}
+.header__call:hover{background:rgba(255,255,255,.16)}
+.header__call .lbl{display:none}
+
+.hamburger{
+  width:46px; height:46px; display:grid; place-items:center;
+  background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.22);
+  border-radius:8px; cursor:pointer; color:#fff;
+}
+.mobile-nav{display:none; border-top:1px solid rgba(255,255,255,.14); padding-bottom:var(--s2)}
+.mobile-nav.is-open{display:block}
+.mobile-nav a{
+  display:block; padding:14px 4px; color:#e7edf4; text-decoration:none;
+  font-weight:600; border-bottom:1px solid rgba(255,255,255,.09);
+}
+.mobile-nav a:hover{color:var(--amber-light)}
+
+/* With JS off the hamburger can't work, so show the links inline instead */
+.nojs-nav{display:none}
+
+/* ==========================================================================
+   5. HERO — asymmetric split, navy block with a subtle ruled pattern
+   ========================================================================== */
+.hero{
+  position:relative; color:#fff; background:var(--navy);
+  background-image:repeating-linear-gradient(115deg,
+      rgba(255,255,255,.035) 0 1px, transparent 1px 13px);
+  padding-block:var(--s6) var(--s6);
+  overflow:hidden;
+}
+.hero__grid{display:grid; gap:var(--s5)}
+.hero h1{color:#fff; margin-bottom:var(--s2)}
+.hero h1 .accent{color:var(--amber-light)}
+.hero__tag{font-size:18px; color:#c9d6e4; max-width:52ch; margin-bottom:var(--s3)}
+.hero__since{
+  display:inline-flex; align-items:center; gap:8px; margin-bottom:var(--s3);
+  background:rgba(240,169,46,.14); border:1px solid rgba(240,169,46,.4);
+  color:var(--amber-light); font-size:13px; font-weight:700;
+  letter-spacing:.08em; text-transform:uppercase; padding:7px 14px; border-radius:999px;
+}
+.hero__cta{display:flex; flex-wrap:wrap; gap:var(--s2); margin-bottom:var(--s4)}
+.hero__cta .btn{flex:1 1 220px}
+
+/* Proof panel — designed to read as an official result declaration */
+.proof{
+  background:
+    radial-gradient(120% 90% at 50% 0%, #fffdf9 0%, #f6f0e3 65%, #efe6d4 100%);
+  color:var(--ink); border-radius:6px; padding:var(--s4) var(--s4) var(--s3);
+  border:1px solid #d9cdb4;
+  box-shadow:0 22px 50px rgba(0,0,0,.34), 0 2px 0 rgba(255,255,255,.7) inset;
+  position:relative; overflow:hidden;
+}
+/* engraved double rule */
+.proof::before{
+  content:""; position:absolute; inset:7px; border:2px solid rgba(109,31,40,.32);
+  border-radius:3px; pointer-events:none;
+}
+.proof::after{
+  content:""; position:absolute; inset:12px; border:1px solid rgba(109,31,40,.2);
+  border-radius:2px; pointer-events:none;
+}
+.proof > *{position:relative; z-index:1}
+.proof__head{
+  display:flex; align-items:baseline; justify-content:space-between; gap:var(--s2);
+  border-bottom:1px solid rgba(109,31,40,.22); padding-bottom:10px; margin-bottom:var(--s3);
+}
+.proof__head .eyebrow{margin:0}
+.proof__session{
+  margin:0; font-size:12px; font-weight:700; letter-spacing:.1em; text-transform:uppercase;
+  color:var(--muted);
+}
+.proof__figure{display:flex; align-items:center; gap:var(--s3)}
+.proof__num{
+  font-family:var(--font-head); font-weight:700; font-size:clamp(64px,15vw,92px);
+  line-height:.82; color:var(--maroon); letter-spacing:-.035em;
+  font-variant-numeric:lining-nums tabular-nums;
+  text-shadow:0 1px 0 rgba(255,255,255,.85);
+}
+.proof__label{font-size:18px; font-weight:700; color:var(--navy); margin:0; line-height:1.3}
+.proof__sub{font-size:14.5px; color:var(--muted); margin:var(--s2) 0 0; font-style:italic}
+.proof__rule{height:3px; background:var(--amber); width:44px; margin:0 0 10px}
+.proof__list{margin-top:var(--s3); border-top:1px dashed rgba(109,31,40,.28); padding-top:var(--s2)}
+.proof__list li{
+  display:flex; justify-content:space-between; gap:var(--s2);
+  font-size:15px; padding:7px 0; border-bottom:1px dotted rgba(18,38,63,.16);
+}
+.proof__list li:last-child{border-bottom:0}
+.proof__list b{color:var(--navy); font-family:var(--font-head); font-size:17px}
+.proof__seal{
+  position:absolute; right:-26px; bottom:-26px; width:132px; height:132px;
+  opacity:.13; transform:rotate(-13deg); pointer-events:none; z-index:0;
+}
+.proof__sealtext{
+  font-family:var(--font-body); font-size:9.2px; font-weight:700; letter-spacing:.22em;
+}
+
+/* Trust strip under the buttons */
+.trust{
+  display:grid; grid-template-columns:repeat(2,1fr); gap:1px;
+  background:rgba(255,255,255,.16); border:1px solid rgba(255,255,255,.16);
+  border-radius:12px; overflow:hidden;
+}
+.trust div{background:var(--navy); padding:14px var(--s2); text-align:center}
+.trust b{display:block; font-family:var(--font-head); font-size:24px; color:var(--amber-light); line-height:1.1}
+.trust span{font-size:12.5px; color:#b9c8d8; letter-spacing:.03em}
+
+/* ==========================================================================
+   6. ADMISSION URGENCY BANNER
+   ========================================================================== */
+.urgency{background:var(--amber); color:#241300}
+.urgency__inner{
+  display:flex; align-items:center; gap:var(--s2); flex-wrap:wrap;
+  padding:12px var(--s3); font-weight:600; font-size:15.5px;
+}
+.urgency .dot{
+  width:9px; height:9px; border-radius:50%; background:#9c2b17; flex:none;
+  animation:pulse 1.8s ease-in-out infinite;
+}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.urgency b{font-weight:800}
+.urgency a{color:#241300; font-weight:800; text-underline-offset:3px;
+  display:inline-block; padding:12px 0; line-height:1.3}
+.urgency__close{
+  margin-left:auto; width:44px; height:44px; border:0; background:transparent;
+  color:#241300; cursor:pointer; font-size:22px; line-height:1; border-radius:8px;
+}
+.urgency__close:hover{background:rgba(0,0,0,.09)}
+
+/* ==========================================================================
+   7. COURSES
+   ========================================================================== */
+.cards{display:grid; gap:var(--s3)}
+.course{
+  position:relative;
+  background:var(--paper); border:1px solid var(--line);
+  border-top:5px solid var(--navy); border-radius:var(--radius);
+  padding:var(--s3); display:flex; flex-direction:column; box-shadow:var(--shadow);
+}
+.course--featured{border-top-color:var(--amber); position:relative}
+.course__flag{
+  position:absolute; top:-1px; right:var(--s3); transform:translateY(-50%);
+  background:var(--maroon); color:#fff; font-size:11.5px; font-weight:700;
+  letter-spacing:.09em; text-transform:uppercase; padding:5px 12px; border-radius:999px;
+}
+.course__exam{font-size:12.5px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--muted)}
+.course h3{margin:6px 0 var(--s2); color:var(--navy)}
+.course__meta{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:var(--s2)}
+.chip{
+  font-size:13px; font-weight:600; color:var(--navy-600);
+  background:#eef2f7; border:1px solid #dbe3ec; border-radius:999px; padding:5px 11px;
+}
+.chip--mode{background:#eaf5ee; border-color:#cfe6d8; color:#1a6b3f}
+.course__list{margin-bottom:var(--s3)}
+.course__list li{
+  position:relative; padding-left:26px; margin-bottom:8px; font-size:15.5px; color:#33404f;
+}
+.course__list li::before{
+  content:""; position:absolute; left:2px; top:9px; width:11px; height:6px;
+  border-left:2.5px solid var(--amber); border-bottom:2.5px solid var(--amber);
+  transform:rotate(-45deg);
+}
+.course__fee{
+  margin-top:auto; background:#fbf6ec; border:1px dashed #e2c894;
+  border-radius:8px; padding:12px var(--s2); margin-bottom:var(--s2);
+  display:flex; align-items:baseline; justify-content:space-between; gap:var(--s1); flex-wrap:wrap;
+}
+.course__fee .amt{font-family:var(--font-head); font-size:26px; font-weight:700; color:var(--navy)}
+.course__fee .note{font-size:13px; color:var(--muted)}
+.fee-note{font-size:14.5px; color:var(--muted); margin-top:var(--s3)}
+
+/* ==========================================================================
+   8. WHY CHOOSE US — full-bleed navy band for section rhythm
+   ========================================================================== */
+.band-navy{background:var(--navy); color:#fff;
+  background-image:repeating-linear-gradient(115deg, rgba(255,255,255,.03) 0 1px, transparent 1px 13px)}
+.band-navy h2{color:#fff}
+.band-navy .lede{color:#c2d0de}
+.why{display:grid; gap:var(--s3)}
+.why__item{
+  background:rgba(255,255,255,.055); border:1px solid rgba(255,255,255,.13);
+  border-radius:var(--radius); padding:var(--s3);
+}
+.why__icon{
+  width:46px; height:46px; border-radius:10px; background:rgba(240,169,46,.16);
+  display:grid; place-items:center; margin-bottom:var(--s2); color:var(--amber-light);
+}
+.why__item h3{color:#fff; font-size:19px; margin-bottom:8px}
+.why__item p{color:#c2d0de; font-size:15.5px; margin:0}
+
+/* ==========================================================================
+   8b. GALLERY — full-bleed horizontal scroll strip, breaks the section rhythm
+   ========================================================================== */
+.gallery{background:#f3ede3}
+.gallery__strip{
+  display:flex; gap:var(--s2); overflow-x:auto; scroll-snap-type:x mandatory;
+  -webkit-overflow-scrolling:touch; scrollbar-width:thin;
+  padding:0 var(--s3) var(--s2);
+  /* on wide screens the first card lines up with the container, but the row
+     still bleeds off the right edge so it reads as scrollable.
+     scroll-padding must match, or snapping scrolls straight past the inset. */
+  --gutter:max(var(--s3), calc((100% - var(--maxw)) / 2 + var(--s3)));
+  padding-inline-start:var(--gutter);
+  scroll-padding-inline-start:var(--gutter);
+}
+.gallery__strip::-webkit-scrollbar{height:6px}
+.gallery__strip::-webkit-scrollbar-thumb{background:#c9bda8; border-radius:3px}
+.gallery__strip > li{flex:0 0 268px; scroll-snap-align:start; display:flex}
+.gallery figure{
+  margin:0; width:100%; display:flex; flex-direction:column;
+  background:var(--paper); border:1px solid var(--line); border-radius:var(--radius);
+  overflow:hidden; box-shadow:var(--shadow);
+}
+.gallery figure svg,.gallery figure img{width:100%; aspect-ratio:4/3; object-fit:cover; display:block}
+.gallery figcaption{padding:14px var(--s2); font-size:14.5px; color:var(--muted); line-height:1.45}
+.gallery figcaption b{display:block; color:var(--navy); font-size:16px; font-family:var(--font-head); margin-bottom:2px}
+.gallery__note{font-size:13.5px; font-style:italic; color:var(--muted); margin:var(--s2) 0 0}
+
+/* ==========================================================================
+   9. FACULTY
+   ========================================================================== */
+.faculty{display:grid; gap:var(--s3)}
+.teacher{
+  background:var(--paper); border:1px solid var(--line); border-radius:var(--radius);
+  padding:var(--s3); box-shadow:var(--shadow); display:flex; gap:var(--s3); align-items:flex-start;
+}
+.teacher__photo{
+  width:92px; height:92px; flex:none; border-radius:50%; overflow:hidden;
+  border:3px solid var(--amber); background:#e9eef4;
+}
+.teacher h3{margin:0 0 2px; color:var(--navy); font-size:20px}
+.teacher__subject{font-size:13px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--amber-dark); margin:0 0 8px}
+.teacher__cred{
+  font-size:14.5px; font-weight:600; color:var(--navy-600);
+  background:#eef2f7; border-radius:6px; padding:5px 10px; display:inline-block; margin-bottom:10px;
+}
+.teacher__quote{font-size:15.5px; color:var(--muted); font-style:italic; margin:0}
+
+/* ==========================================================================
+   10. RESULTS — maroon band + horizontal scroll row
+   ========================================================================== */
+.band-maroon{background:var(--maroon); color:#fff}
+.band-maroon h2{color:#fff}
+.stats{display:grid; grid-template-columns:repeat(3,1fr); gap:1px;
+  background:rgba(255,255,255,.22); border:1px solid rgba(255,255,255,.22);
+  border-radius:12px; overflow:hidden; margin-bottom:var(--s5)}
+.stats div{background:var(--maroon); padding:var(--s3) var(--s1); text-align:center}
+.stats b{display:block; font-family:var(--font-head); font-size:clamp(30px,7vw,44px); line-height:1; color:var(--amber-light)}
+.stats span{font-size:13px; color:#f0dcd8; letter-spacing:.04em}
+
+.hscroll{
+  display:flex; gap:var(--s2); overflow-x:auto; padding-bottom:var(--s2);
+  scroll-snap-type:x mandatory; -webkit-overflow-scrolling:touch;
+  scrollbar-width:thin;
+}
+.hscroll::-webkit-scrollbar{height:6px}
+.hscroll::-webkit-scrollbar-thumb{background:rgba(255,255,255,.4); border-radius:3px}
+.topper{
+  flex:0 0 200px; scroll-snap-align:start;
+  background:#fff; color:var(--ink); border-radius:var(--radius); overflow:hidden;
+  border-bottom:4px solid var(--amber);
+}
+.topper__body{padding:var(--s2)}
+.topper h3{font-size:17px; margin:0 0 2px; color:var(--navy)}
+.topper .rank{
+  display:inline-block; background:var(--maroon); color:#fff; font-weight:700; font-size:13px;
+  padding:3px 9px; border-radius:5px; margin-bottom:6px;
+}
+.topper p{font-size:14px; color:var(--muted); margin:0}
+.scroll-hint{font-size:13.5px; color:#f0dcd8; margin-top:var(--s2)}
+.disclaimer{font-size:13.5px; font-style:italic; color:#f0dcd8; margin-top:var(--s3); max-width:70ch}
+
+/* ==========================================================================
+   11. TESTIMONIALS
+   ========================================================================== */
+.quotes{display:grid; gap:var(--s3)}
+.quote{
+  background:var(--paper); border:1px solid var(--line); border-radius:var(--radius);
+  padding:var(--s4) var(--s3) var(--s3); position:relative; box-shadow:var(--shadow);
+}
+.quote::before{
+  content:"\201C"; position:absolute; top:2px; left:18px;
+  font-family:var(--font-head); font-size:74px; line-height:1; color:var(--amber); opacity:.35;
+}
+.quote p{font-size:16.5px; color:#2b3745; margin-bottom:var(--s2)}
+.quote footer{display:flex; align-items:center; gap:12px; border-top:1px solid var(--line); padding-top:var(--s2)}
+.quote__avatar{
+  width:42px; height:42px; border-radius:50%; flex:none; background:var(--navy);
+  color:#fff; display:grid; place-items:center; font-weight:700; font-size:16px;
+}
+.quote__name{font-weight:700; color:var(--navy); font-size:15.5px; line-height:1.3}
+.quote__meta{font-size:13.5px; color:var(--muted)}
+
+/* ==========================================================================
+   12. ENQUIRY FORM — asymmetric split
+   ========================================================================== */
+.enquiry{background:var(--navy-800); color:#fff}
+.enquiry__grid{display:grid; gap:var(--s4)}
+.enquiry h2{color:#fff}
+.enquiry__side p{color:#c2d0de}
+.enquiry__side li{
+  display:flex; gap:10px; align-items:flex-start; margin-bottom:12px; color:#dbe4ee; font-size:15.5px;
+}
+.enquiry__side li svg{flex:none; margin-top:4px; color:var(--amber)}
+.form{
+  background:var(--paper); color:var(--ink); border-radius:14px;
+  padding:var(--s3); border-top:5px solid var(--amber);
+}
+.form h3{color:var(--navy); margin-bottom:4px}
+.form__note{font-size:14.5px; color:var(--muted); margin-bottom:var(--s3)}
+.field{margin-bottom:var(--s2)}
+.field label{display:block; font-weight:600; font-size:15px; margin-bottom:6px; color:#2b3745}
+.field .req{color:var(--err)}
+.field input,.field select,.field textarea{
+  width:100%; min-height:50px; padding:12px 14px;
+  font-family:var(--font-body); font-size:16px; color:var(--ink);
+  background:#fff; border:1.5px solid #c9d2dc; border-radius:8px;
+}
+.field textarea{min-height:90px; resize:vertical}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--navy); outline-offset:1px}
+.field .hint{font-size:13.5px; color:var(--muted); margin-top:5px}
+.field--half{display:grid; gap:var(--s2)}
+.error{
+  display:none; color:var(--err); font-size:14px; font-weight:600; margin-top:6px;
+}
+.field.is-invalid input,.field.is-invalid select{border-color:var(--err); background:#fdf4f3}
+.field.is-invalid .error{display:block}
+.form__success{
+  display:none; background:#eaf6ee; border:1.5px solid #b7ddc5; border-radius:10px;
+  padding:var(--s3); text-align:center;
+}
+.form__success.is-shown{display:block}
+.form__success h3{color:var(--ok)}
+.form__success p{font-size:15.5px; color:#2b3745}
+.privacy{font-size:13px; color:var(--muted); margin:var(--s2) 0 0; text-align:center}
+
+/* ==========================================================================
+   13. LOCATION
+   ========================================================================== */
+.loc{display:grid; gap:var(--s4)}
+.metro{
+  display:flex; gap:12px; align-items:flex-start;
+  background:#eef4ea; border-left:5px solid #3f7d42; border-radius:8px;
+  padding:var(--s2) var(--s3); margin-bottom:var(--s3);
+}
+.metro b{display:block; color:#255c2a; font-size:17px}
+.metro span{font-size:15px; color:#3d5540}
+.info li{display:flex; gap:12px; align-items:flex-start; margin-bottom:var(--s2); font-size:16px}
+.info svg{flex:none; margin-top:4px; color:var(--amber)}
+.info a{color:var(--navy); font-weight:600; display:inline-block; padding:12px 0; line-height:1.45}
+.info b{display:block; color:var(--navy)}
+.map{
+  border-radius:var(--radius); overflow:hidden; border:1px solid var(--line);
+  box-shadow:var(--shadow); background:#e9eef4; min-height:300px;
+}
+.map iframe{width:100%; height:340px; border:0; display:block}
+
+/* ==========================================================================
+   14. FAQ — native <details> so it works with JS disabled
+   ========================================================================== */
+.faq{max-width:820px}
+.faq details{
+  background:var(--paper); border:1px solid var(--line); border-radius:var(--radius);
+  margin-bottom:12px; overflow:hidden;
+}
+.faq details[open]{border-color:#cfd8e2; box-shadow:var(--shadow)}
+.faq summary{
+  cursor:pointer; list-style:none; padding:18px var(--s3) 18px var(--s2);
+  font-weight:700; font-size:16.5px; color:var(--navy);
+  display:flex; align-items:center; gap:12px; min-height:56px;
+}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{
+  content:""; margin-left:auto; flex:none; width:11px; height:11px;
+  border-right:2.5px solid var(--amber); border-bottom:2.5px solid var(--amber);
+  transform:rotate(45deg) translateY(-3px); transition:transform .2s ease;
+}
+.faq details[open] summary::after{transform:rotate(-135deg) translateY(-3px)}
+.faq summary:hover{background:#f7f4ee}
+.faq .answer{padding:0 var(--s3) var(--s3) var(--s2); color:#33404f; font-size:16px}
+.faq .answer p:last-child{margin-bottom:0}
+
+/* ==========================================================================
+   15. FOOTER
+   ========================================================================== */
+.footer{background:var(--navy-800); color:#b9c8d8; padding-block:var(--s6) var(--s3); font-size:15.5px}
+.footer__grid{display:grid; gap:var(--s4); margin-bottom:var(--s4)}
+.footer h4{color:#fff; font-size:17px; margin-bottom:var(--s2)}
+.footer a{color:#cdd9e6; text-decoration:none}
+.footer a:hover{color:var(--amber-light); text-decoration:underline}
+.footer li{margin-bottom:4px}
+/* Give footer links a 44px tap area without changing how they look */
+.footer ul a{display:inline-block; padding:12px 0; line-height:1.45}
+.footer .brand__name{font-size:19px}
+.social{display:flex; gap:10px; margin-top:var(--s2)}
+.social a{
+  width:44px; height:44px; border-radius:9px; display:grid; place-items:center;
+  background:rgba(255,255,255,.09); border:1px solid rgba(255,255,255,.16); color:#fff;
+}
+.social a:hover{background:var(--amber); color:var(--navy); border-color:var(--amber)}
+.footer__base{
+  border-top:1px solid rgba(255,255,255,.13); padding-top:var(--s3);
+  font-size:14px; display:flex; flex-wrap:wrap; gap:var(--s1) var(--s3); justify-content:space-between;
+}
+
+/* ==========================================================================
+   16. FLOATING WHATSAPP + MOBILE STICKY BAR
+   ========================================================================== */
+.wa-float{
+  position:fixed; right:16px; bottom:88px; z-index:70;
+  width:58px; height:58px; border-radius:50%; background:#157a45; color:#fff;
+  display:grid; place-items:center; box-shadow:0 6px 20px rgba(0,0,0,.3);
+}
+.wa-float:hover{background:#1a8f52}
+
+.mobile-bar{
+  position:fixed; left:0; right:0; bottom:0; z-index:80;
+  display:grid; grid-template-columns:1fr 1fr;
+  border-top:1px solid rgba(0,0,0,.15); box-shadow:0 -3px 14px rgba(0,0,0,.16);
+}
+.mobile-bar a{
+  min-height:60px; display:flex; align-items:center; justify-content:center; gap:9px;
+  font-weight:700; font-size:16px; text-decoration:none; color:#fff;
+}
+.mobile-bar .call{background:var(--navy)}
+.mobile-bar .wa{background:#157a45}
+body{padding-bottom:60px}          /* room for the sticky bar on mobile */
+
+/* ==========================================================================
+   17. SCROLL REVEAL (disabled when the OS asks for reduced motion)
+   ========================================================================== */
+.reveal{opacity:0; transform:translateY(18px); transition:opacity .5s ease, transform .5s ease}
+.reveal.is-in{opacity:1; transform:none}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .reveal{opacity:1; transform:none; transition:none}
+  .urgency .dot{animation:none}
+  .course:hover,.teacher:hover,.quote:hover,.gallery figure:hover,.topper:hover{transform:none}
+  *{transition-duration:.01ms !important}
+}
+
+/* ==========================================================================
+   18. BREAKPOINTS — 360 / 768 / 1024 / 1440
+   ========================================================================== */
+@media (min-width:600px){
+  .trust{grid-template-columns:repeat(4,1fr)}
+  .field--half{grid-template-columns:1fr 1fr}
+  .header__call .lbl{display:inline}
+}
+@media (min-width:768px){
+  .section{padding-block:var(--s8)}
+  .cards{grid-template-columns:repeat(2,1fr)}
+  .why{grid-template-columns:repeat(2,1fr)}
+  .faculty{grid-template-columns:repeat(2,1fr)}
+  .quotes{grid-template-columns:repeat(2,1fr)}
+  .loc{grid-template-columns:1fr 1fr; align-items:start}
+  .footer__grid{grid-template-columns:2fr 1fr 1.4fr}
+  .topper{flex-basis:230px}
+  .enquiry__grid{grid-template-columns:1fr 1.1fr; align-items:start; gap:var(--s6)}
+  .form{padding:var(--s4)}
+  .mobile-bar{display:none}
+  body{padding-bottom:0}
+  .wa-float{bottom:24px; right:24px; width:62px; height:62px}
+}
+@media (min-width:1024px){
+  .nav{display:block}
+  .hamburger{display:none}
+  .mobile-nav{display:none !important}
+  .cards{grid-template-columns:repeat(3,1fr)}
+  .why{grid-template-columns:repeat(3,1fr)}
+  .gallery__strip > li{flex-basis:340px}
+  .hero__grid{grid-template-columns:1.25fr .9fr; align-items:center; gap:var(--s6)}
+  .hero{padding-block:var(--s8)}
+  .quotes{grid-template-columns:repeat(4,1fr)}
+}
+@media (min-width:1440px){
+  :root{--maxw:1240px}
+  .section{padding-block:110px}
+}
+
+/* JS-off fallbacks */
+.no-js .reveal{opacity:1; transform:none}
+
+/* ==========================================================================
+   19. MULTI-PAGE ADDITIONS
+   Styles that only exist now that there are course pages and a blog.
+   ========================================================================== */
+.hero--course{padding-block:var(--s6)}
+.hero--course h1{margin-bottom:var(--s2)}
+.crumbs{font-size:14px; color:#9fb2c6; margin-bottom:var(--s3)}
+.crumbs a{color:#cfdcea; text-decoration:none; padding:12px 0; display:inline-block; line-height:1.5}
+.crumbs a:hover{color:var(--amber-light); text-decoration:underline}
+.crumbs span{margin:0 6px}
+
+.course-facts{
+  display:grid; grid-template-columns:repeat(2,1fr); gap:1px; margin-bottom:var(--s4);
+  background:rgba(255,255,255,.16); border:1px solid rgba(255,255,255,.16);
+  border-radius:12px; overflow:hidden;
+}
+.course-facts div{background:var(--navy); padding:14px var(--s2)}
+.course-facts b{display:block; font-family:var(--font-head); font-size:19px; color:var(--amber-light); line-height:1.2}
+.course-facts span{font-size:12.5px; color:#b9c8d8; letter-spacing:.03em}
+
+.prose-wrap{display:grid; gap:var(--s5)}
+.prose{max-width:68ch}
+.prose h2{margin-top:var(--s5)}
+.prose h2:first-child{margin-top:0}
+.prose p{color:#33404f}
+.prose table{width:100%; border-collapse:collapse; margin-bottom:var(--s3); font-size:15.5px}
+.prose th,.prose td{text-align:left; padding:10px 12px; border-bottom:1px solid var(--line)}
+.prose th{background:#f1ece2; font-family:var(--font-head); color:var(--navy)}
+.prose--single{max-width:70ch; margin-inline:auto}
+.course__list--lg li{font-size:16.5px; margin-bottom:12px}
+
+.sticky-card{
+  background:var(--paper); border:1px solid var(--line); border-top:5px solid var(--amber);
+  border-radius:var(--radius); padding:var(--s3); box-shadow:var(--shadow); align-self:start;
+}
+.sticky-card__fee{font-family:var(--font-head); font-size:38px; font-weight:700; color:var(--navy); margin:0; line-height:1}
+.sticky-card__note{font-size:14.5px; color:var(--muted); margin:4px 0 var(--s2)}
+.sticky-card__meta{font-size:15px; color:#33404f; margin-bottom:var(--s3);
+  padding-top:var(--s2); border-top:1px dashed var(--line)}
+.sticky-card__small{font-size:13.5px; color:var(--muted); margin:var(--s2) 0 0; text-align:center}
+
+.post-list{display:grid; gap:var(--s3); max-width:820px}
+.post-card{
+  position:relative;
+  background:var(--paper); border:1px solid var(--line); border-radius:var(--radius);
+  padding:var(--s3); box-shadow:var(--shadow);
+  transition:transform .18s ease, box-shadow .18s ease;
+}
+@media (hover:hover){.post-card:hover{transform:translateY(-4px); box-shadow:0 16px 34px rgba(18,38,63,.13)}}
+.post-card__tag{
+  font-size:12px; font-weight:700; letter-spacing:.12em; text-transform:uppercase;
+  color:var(--amber-dark); margin:0 0 6px;
+}
+.post-card h2{font-size:clamp(20px,3vw,25px); margin-bottom:8px}
+.post-card h2 a{color:var(--navy)}
+.post-card__desc{color:var(--muted); font-size:16px; margin-bottom:10px}
+.post-card__date{font-size:14px; color:var(--muted); margin:0}
+
+.post-cta{
+  max-width:70ch; margin:var(--s6) auto 0; text-align:center;
+  background:#f1ece2; border:1px solid var(--line); border-radius:var(--radius); padding:var(--s4);
+}
+.post-cta h2{margin-bottom:8px}
+.post-cta p{color:var(--muted); max-width:52ch; margin-inline:auto}
+
+/* Stretched link: the card title is the link, but the whole card is the tap
+   target. Buttons inside the card are lifted above it so they stay clickable. */
+.course h3 a,.post-card h2 a{color:inherit; text-decoration:none}
+.course h3 a:hover,.post-card h2 a:hover{color:var(--maroon); text-decoration:underline; text-underline-offset:3px}
+.course h3 a::after,.post-card h2 a::after{content:""; position:absolute; inset:0; z-index:1}
+.course .btn,.course__fee{position:relative; z-index:2}
+
+@media (min-width:600px){
+  .course-facts{grid-template-columns:repeat(4,1fr)}
+}
+@media (min-width:1024px){
+  .prose-wrap{grid-template-columns:1fr 320px; gap:var(--s6); align-items:start}
+  .sticky-card{position:sticky; top:96px}
+}

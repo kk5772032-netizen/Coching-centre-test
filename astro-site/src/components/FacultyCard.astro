@@ -1,0 +1,26 @@
+---
+import type { CollectionEntry } from 'astro:content';
+interface Props { teacher: CollectionEntry<'faculty'> }
+const { teacher } = Astro.props;
+const d = teacher.data;
+const tone = d.order % 2 === 1 ? { bg: '#dde5ee', fg: '#12263f' } : { bg: '#e8dfd2', fg: '#6d1f28' };
+---
+<article class="teacher reveal">
+  <div class="teacher__photo">
+    {d.photo ? (
+      <img src={d.photo} alt={`${d.name}, ${d.subject} faculty`} width="92" height="92" loading="lazy" />
+    ) : (
+      <svg viewBox="0 0 92 92" role="img" aria-label={`Photo placeholder for ${d.name}`}>
+        <rect width="92" height="92" fill={tone.bg} />
+        <circle cx="46" cy="35" r="15" fill={tone.fg} />
+        <path d="M15 92a31 31 0 0 1 62 0z" fill={tone.fg} />
+      </svg>
+    )}
+  </div>
+  <div>
+    <h3>{d.name}</h3>
+    <p class="teacher__subject">{d.subject}</p>
+    <p class="teacher__cred">{d.credential}</p>
+    <p class="teacher__quote">&ldquo;{d.quote}&rdquo;</p>
+  </div>
+</article>

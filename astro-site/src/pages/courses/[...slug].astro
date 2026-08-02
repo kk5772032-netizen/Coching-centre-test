@@ -1,0 +1,114 @@
+---
+/* ---------------------------------------------------------------------------
+   ONE LANDING PAGE PER COURSE — this is the SEO payoff of the rewrite.
+   Six Markdown files become six pages, each with its own <title>, meta
+   description and Course schema, so each can rank for its own exam term.
+   Adding a seventh course means adding a seventh .md file. Nothing else.
+   --------------------------------------------------------------------------- */
+import { getCollection, render } from 'astro:content';
+import type { GetStaticPaths } from 'astro';
+import { site, waLink, rupees } from '../../site.config';
+import Base from '../../layouts/Base.astro';
+import EnquiryForm from '../../components/EnquiryForm.astro';
+import Faq from '../../components/Faq.astro';
+import Location from '../../components/Location.astro';
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  const courses = await getCollection('courses');
+  return courses.map((course) => ({ params: { slug: course.id }, props: { course } }));
+};
+
+const { course } = Astro.props;
+const d = course.data;
+const { Content } = await render(course);
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'Course',
+  name: d.title,
+  description: d.seoDescription,
+  provider: { '@type': 'EducationalOrganization', name: site.name, sameAs: site.url },
+  offers: {
+    '@type': 'Offer',
+    price: d.fee,
+    priceCurrency: 'INR',
+    category: 'Paid',
+    availability: 'https://schema.org/InStock',
+  },
+  hasCourseInstance: {
+    '@type': 'CourseInstance',
+    courseMode: d.mode === 'Online' ? 'Online' : 'Onsite',
+    courseSchedule: {
+      '@type': 'Schedule',
+      duration: d.duration,
+      byDay: d.mode === 'Weekend' ? ['Saturday', 'Sunday'] : ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'],
+    },
+    location: {
+      '@type': 'Place',
+      name: site.name,
+      address: {
+        '@type': 'PostalAddress',
+        streetAddress: site.address.street,
+        addressLocality: site.address.locality,
+        postalCode: site.address.postalCode,
+        addressCountry: site.address.country,
+      },
+    },
+  },
+};
+---
+<Base title={d.seoTitle} description={d.seoDescription} schema={schema}>
+  <section class="hero hero--course">
+    <div class="wrap">
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/">Home</a> <span aria-hidden="true">/</span>
+        <a href="/#courses">Courses</a> <span aria-hidden="true">/</span>
+        <span aria-current="page">{d.title}</span>
+      </nav>
+      <p class="hero__since">{d.exam}</p>
+      <h1>{d.title}</h1>
+      <p class="hero__tag">{d.intro}</p>
+
+      <div class="course-facts">
+        <div><b>{d.duration}</b><span>Duration</span></div>
+        <div><b>{d.timing}</b><span>Class timing</span></div>
+        <div><b>{d.mode}</b><span>Mode</span></div>
+        <div><b>{rupees(d.fee)}</b><span>{d.instalments ?? 'Total fee'}</span></div>
+      </div>
+
+      <div class="hero__cta">
+        <a class="btn btn--primary" href="#enquiry">Book a free demo class</a>
+        <a class="btn btn--wa" href={waLink(`Hi, I want details of the ${d.title} batch at ${site.name}.`)}
+           target="_blank" rel="noopener">Ask on WhatsApp</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap prose-wrap">
+      <div class="prose">
+        <h2>What the batch includes</h2>
+        <ul class="course__list course__list--lg">
+          {d.inclusions.map((line) => <li>{line}</li>)}
+        </ul>
+        <Content />
+      </div>
+
+      <aside class="sticky-card">
+        <p class="eyebrow eyebrow--dark">Admissions open</p>
+        <p class="sticky-card__fee">{rupees(d.fee)}</p>
+        {d.instalments && <p class="sticky-card__note">{d.instalments}</p>}
+        <p class="sticky-card__meta">{d.duration} &middot; {d.timing}<br />{d.mode}</p>
+        <a class="btn btn--primary btn--block" href="#enquiry">Book a free demo</a>
+        <a class="btn btn--wa btn--block" style="margin-top:8px"
+           href={waLink(`Hi, I want details of the ${d.title} batch at ${site.name}.`)}
+           target="_blank" rel="noopener">Ask on WhatsApp</a>
+        <p class="sticky-card__small">{site.metroWalkMinutes} min from {site.metro}</p>
+      </aside>
+    </div>
+  </section>
+
+  <EnquiryForm presetCourse={d.title} />
+  <Location />
+  <Faq />
+</Base>

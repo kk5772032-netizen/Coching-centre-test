@@ -1,0 +1,29 @@
+---
+import { getCollection } from 'astro:content';
+import { site } from '../site.config';
+import TopperCard from './TopperCard.astro';
+
+const toppers = (await getCollection('toppers')).sort((a, b) => a.data.order - b.data.order);
+const s = site.stats;
+---
+<section class="section band-maroon" id="results">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow" style="color:#f5b843">Results</p>
+      <h2>What last year looked like</h2>
+    </div>
+
+    <div class="stats reveal">
+      <div><b data-count={s.lastYearSelections}>{s.lastYearSelections}</b><span>Selections in {s.resultYear}</span></div>
+      <div><b data-count={s.bestRank} data-prefix="AIR ">AIR {s.bestRank}</b><span>Best rank, SSC CGL</span></div>
+      <div><b data-count={s.selectionRate} data-suffix="%">{s.selectionRate}%</b><span>Selection rate</span></div>
+    </div>
+
+    <ul class="hscroll reveal">
+      {toppers.map((topper) => <TopperCard topper={topper} />)}
+    </ul>
+    <p class="scroll-hint">&larr; Swipe to see more selections</p>
+
+    <p class="disclaimer">Results are as declared by the institute on the basis of student-submitted score cards. Selection depends on the candidate's own effort; no institute can guarantee a result.</p>
+  </div>
+</section>

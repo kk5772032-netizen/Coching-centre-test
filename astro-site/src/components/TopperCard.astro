@@ -1,0 +1,24 @@
+---
+import type { CollectionEntry } from 'astro:content';
+interface Props { topper: CollectionEntry<'toppers'> }
+const { topper } = Astro.props;
+const d = topper.data;
+const tone = d.order % 2 === 1 ? { bg: '#eee6da', fg: '#6d1f28' } : { bg: '#e2e9f1', fg: '#12263f' };
+const line = [`${d.exam} ${d.year}`, d.post].filter(Boolean).join(' · ');
+---
+<li class="topper">
+  {d.photo ? (
+    <img src={d.photo} alt={`${d.name}, ${d.rank} in ${d.exam} ${d.year}`} width="230" height="180" loading="lazy" />
+  ) : (
+    <svg viewBox="0 0 230 180" role="img" aria-label={`Photo placeholder for ${d.name}`}>
+      <rect width="230" height="180" fill={tone.bg} />
+      <circle cx="115" cy="72" r="29" fill={tone.fg} />
+      <path d="M56 180a59 59 0 0 1 118 0z" fill={tone.fg} />
+    </svg>
+  )}
+  <div class="topper__body">
+    <span class="rank">{d.rank}</span>
+    <h3>{d.name}</h3>
+    <p>{line}</p>
+  </div>
+</li>

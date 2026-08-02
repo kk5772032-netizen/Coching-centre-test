@@ -1,0 +1,167 @@
+---
+import { site } from '../site.config';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import FloatingCta from '../components/FloatingCta.astro';
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description: string;
+  /** Set on pages that should not inherit the organisation-wide JSON-LD. */
+  schema?: object;
+}
+const { title, description, schema } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site ?? site.url).href;
+const ogImage = new URL('/og.png', Astro.site ?? site.url).href;
+
+/* Organisation schema — built from site.config so the address and phone can
+   never drift out of sync with what is printed on the page. */
+const orgSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'EducationalOrganization',
+  name: site.name,
+  alternateName: `${site.name} SSC Coaching ${site.area}`,
+  url: site.url,
+  telephone: site.phone,
+  email: site.email,
+  foundingDate: String(site.foundedYear),
+  priceRange: '₹18,000 - ₹45,000',
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: site.address.street,
+    addressLocality: site.address.locality,
+    addressRegion: site.address.region,
+    postalCode: site.address.postalCode,
+    addressCountry: site.address.country,
+  },
+  geo: { '@type': 'GeoCoordinates', latitude: site.address.lat, longitude: site.address.lng },
+  openingHoursSpecification: [{
+    '@type': 'OpeningHoursSpecification',
+    dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+    opens: '07:00',
+    closes: '20:00',
+  }],
+  aggregateRating: {
+    '@type': 'AggregateRating',
+    ratingValue: site.stats.googleRating,
+    reviewCount: String(site.stats.googleReviews),
+  },
+  sameAs: [site.social.youtube, site.social.instagram, site.social.facebook],
+};
+
+const favicon = `data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><path d='M32 2.5 58.5 10.6v22.6c0 14.4-11 24.8-26.5 28.9C16.5 58 5.5 47.6 5.5 33.2V10.6z' fill='%2312263f' stroke='%23e0901c' stroke-width='3'/><path d='M14 41 28.4 19.5 36 31l4.6-6.4L50 41z' fill='%23f5b843'/><path d='M15 45.5h34v2.2c-5.4-1.9-11.6-1.6-17 1-5.4-2.6-11.6-2.9-17-1z' fill='%23faf6ef'/></svg>`;
+---
+<!DOCTYPE html>
+<html lang="en-IN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <link rel="canonical" href={canonical} />
+  <meta name="theme-color" content="#12263f" />
+  <meta name="robots" content="index, follow" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content={site.name} />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:url" content={canonical} />
+  <meta property="og:locale" content="en_IN" />
+  <meta property="og:image" content={ogImage} />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={title} />
+  <meta name="twitter:description" content={description} />
+  <meta name="twitter:image" content={ogImage} />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="icon" href={favicon} />
+
+  <script type="application/ld+json" set:html={JSON.stringify(orgSchema)} />
+  {schema && <script type="application/ld+json" set:html={JSON.stringify(schema)} />}
+</head>
+
+<body class="no-js">
+  <a class="skip" href="#main">Skip to main content</a>
+  <Header />
+  <main id="main">
+    <slot />
+  </main>
+  <Footer />
+  <FloatingCta />
+
+  <script>
+    // Progressive enhancement only — every bit of content above renders
+    // as static HTML at build time and works with this script blocked.
+    document.body.classList.remove('no-js');
+
+    const menuBtn = document.getElementById('menuBtn');
+    const mobileNav = document.getElementById('mobileNav');
+    if (menuBtn && mobileNav) {
+      const close = () => {
+        mobileNav.classList.remove('is-open');
+        menuBtn.setAttribute('aria-expanded', 'false');
+        menuBtn.setAttribute('aria-label', 'Open menu');
+      };
+      menuBtn.addEventListener('click', () => {
+        const open = mobileNav.classList.toggle('is-open');
+        menuBtn.setAttribute('aria-expanded', String(open));
+        menuBtn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+      });
+      mobileNav.querySelectorAll('a').forEach((a) => a.addEventListener('click', close));
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && mobileNav.classList.contains('is-open')) {
+          close();
+          menuBtn.focus();
+        }
+      });
+    }
+
+    const bar = document.getElementById('urgencyBar');
+    document.getElementById('urgencyClose')?.addEventListener('click', () => bar?.remove());
+
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const items = document.querySelectorAll('.reveal');
+
+    if (!reduce && 'IntersectionObserver' in window) {
+      const countUp = (el: Element) => {
+        const target = parseFloat(el.getAttribute('data-count') || '0');
+        const prefix = el.getAttribute('data-prefix') || '';
+        const suffix = el.getAttribute('data-suffix') || '';
+        let t0: number | null = null;
+        const frame = (now: number) => {
+          if (t0 === null) t0 = now;
+          const p = Math.min((now - t0) / 1100, 1);
+          const eased = 1 - Math.pow(1 - p, 3);
+          el.textContent = prefix + Math.round(target * eased).toLocaleString('en-IN') + suffix;
+          if (p < 1) requestAnimationFrame(frame);
+        };
+        requestAnimationFrame(frame);
+      };
+      const numObs = new IntersectionObserver((entries) => {
+        entries.forEach((e) => {
+          if (!e.isIntersecting) return;
+          countUp(e.target);
+          numObs.unobserve(e.target);
+        });
+      }, { threshold: 0.6 });
+      document.querySelectorAll('[data-count]').forEach((el) => numObs.observe(el));
+
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach((entry, i) => {
+          if (!entry.isIntersecting) return;
+          const el = entry.target;
+          setTimeout(() => el.classList.add('is-in'), i * 70);
+          io.unobserve(el);
+        });
+      }, { rootMargin: '0px 0px -60px 0px', threshold: 0.08 });
+      items.forEach((el) => io.observe(el));
+    } else {
+      items.forEach((el) => el.classList.add('is-in'));
+    }
+  </script>
+</body>
+</html>

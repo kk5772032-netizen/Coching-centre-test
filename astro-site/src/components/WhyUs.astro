@@ -1,0 +1,22 @@
+---
+import { whyUs } from '../site.config';
+import Icon from './Icon.astro';
+---
+<section class="section band-navy">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow">Why students stay with us</p>
+      <h2>Six things we actually do differently</h2>
+      <p class="lede">No promises we cannot keep. These are the things you can verify on your demo day.</p>
+    </div>
+    <div class="why">
+      {whyUs.map((item) => (
+        <div class="why__item reveal">
+          <div class="why__icon"><Icon name={item.icon} size={24} /></div>
+          <h3>{item.title}</h3>
+          <p>{item.body}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

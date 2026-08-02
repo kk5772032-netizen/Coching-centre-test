@@ -1,0 +1,64 @@
+---
+import { site, waLink } from '../site.config';
+import Crest from './Crest.astro';
+import WhatsAppIcon from './WhatsAppIcon.astro';
+const year = new Date().getFullYear();
+---
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer__grid">
+      <div>
+        <div class="brand" style="margin-bottom:12px">
+          <Crest class="brand__mark" />
+          <span>
+            <span class="brand__name">{site.name}</span>
+            <span class="brand__sub">Since {site.foundedYear}</span>
+          </span>
+        </div>
+        <p>SSC CGL, CHSL, MTS, CPO and Delhi Police coaching in Dr {site.area}, Delhi. Small batches, printed material and daily doubt sessions.</p>
+        <div class="social">
+          <a href={site.social.youtube} target="_blank" rel="noopener" aria-label={`${site.name} on YouTube`}>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23 12s0-3.5-.4-5.2a2.7 2.7 0 0 0-1.9-1.9C19 4.5 12 4.5 12 4.5s-7 0-8.7.4A2.7 2.7 0 0 0 1.4 6.8C1 8.5 1 12 1 12s0 3.5.4 5.2a2.7 2.7 0 0 0 1.9 1.9c1.7.4 8.7.4 8.7.4s7 0 8.7-.4a2.7 2.7 0 0 0 1.9-1.9C23 15.5 23 12 23 12zM9.8 15.3V8.7l5.7 3.3-5.7 3.3z"/></svg>
+          </a>
+          <a href={site.social.instagram} target="_blank" rel="noopener" aria-label={`${site.name} on Instagram`}>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2.5" y="2.5" width="19" height="19" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.6" cy="6.4" r="1.2" fill="currentColor" stroke="none"/></svg>
+          </a>
+          <a href={site.social.facebook} target="_blank" rel="noopener" aria-label={`${site.name} on Facebook`}>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M14 9h3V6h-3c-2.2 0-4 1.8-4 4v2H8v3h2v7h3v-7h3l1-3h-4v-2c0-.6.4-1 1-1z"/></svg>
+          </a>
+          <a href={waLink()} target="_blank" rel="noopener" aria-label={`Message ${site.name} on WhatsApp`}>
+            <WhatsAppIcon size={20} />
+          </a>
+        </div>
+      </div>
+
+      <div>
+        <h4>Quick links</h4>
+        <ul>
+          <li><a href="/#courses">Courses &amp; batches</a></li>
+          <li><a href="/#centre">Inside the centre</a></li>
+          <li><a href="/#faculty">Our faculty</a></li>
+          <li><a href="/#results">Results</a></li>
+          <li><a href="/blog/">Blog</a></li>
+          <li><a href="/#enquiry">Book a demo class</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4>Reach us</h4>
+        <ul>
+          <li>{site.address.line1},<br />{site.address.line2}</li>
+          <li>Phone: <a href={`tel:${site.phone}`}>+91 {site.phoneDisplay}</a></li>
+          <li>WhatsApp: <a href={waLink()} target="_blank" rel="noopener">+91 {site.phoneDisplay}</a></li>
+          <li>Email: <a href={`mailto:${site.email}`}>{site.email}</a></li>
+          <li>{site.timings}</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer__base">
+      <span>&copy; {year} {site.name}, Delhi. All rights reserved.</span>
+      <span>Results as declared by the institute. No guarantee of selection is offered or implied.</span>
+    </div>
+  </div>
+</footer>

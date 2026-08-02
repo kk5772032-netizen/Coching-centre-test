@@ -4,6 +4,12 @@ A single self-contained `index.html`. No build step, no npm, no framework.
 Double-click the file and it opens. Everything is inline except Google Fonts
 and the Google Maps embed.
 
+> **There are two versions in this repo.** This README covers the shipped
+> single-file site. `astro-site/` holds a working multi-page rewrite for when
+> the client commits to per-exam landing pages and a blog — see
+> [`astro-site/README.md`](astro-site/README.md). Both build from the same
+> design; use whichever suits the client's scope.
+
 - **Page weight:** ~87 KB raw, ~22 KB gzipped (plus ~50 KB of fonts on first load)
 - **Tested at:** 360px, 768px, 1024px, 1440px — no horizontal overflow at any width
 - **Works with JavaScript disabled** for all content; JS only enhances (menu, form, reveals)

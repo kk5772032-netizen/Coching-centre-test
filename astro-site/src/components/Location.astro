@@ -1,0 +1,45 @@
+---
+import { site } from '../site.config';
+import Icon from './Icon.astro';
+const mapQuery = encodeURIComponent(`${site.address.street}, ${site.address.locality} ${site.address.postalCode}`);
+---
+<section class="section" id="contact">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow">Visit us</p>
+      <h2>Where we are</h2>
+    </div>
+
+    <div class="loc">
+      <div class="reveal">
+        <div class="metro">
+          <Icon name="metro" size={26} />
+          <span>
+            <b>{site.metroWalkMinutes} minutes from {site.metro}</b>
+            <span>Yellow Line. Come out of Gate 3, walk straight towards Batra Cinema — we are above Punjab National Bank.</span>
+          </span>
+        </div>
+
+        <ul class="info">
+          <li><Icon name="pin" size={20} /><span><b>Address</b>{site.address.line1},<br />{site.address.line2}</span></li>
+          <li><Icon name="clock" size={20} /><span><b>Office timings</b>{site.timings}<br />{site.sundayTimings}</span></li>
+          <li><Icon name="phone" size={20} /><span><b>Phone &amp; WhatsApp</b><a href={`tel:${site.phone}`}>+91 {site.phoneDisplay}</a></span></li>
+          <li><Icon name="mail" size={20} /><span><b>Email</b><a href={`mailto:${site.email}`}>{site.email}</a></span></li>
+        </ul>
+
+        <a class="btn btn--outline" href={`https://www.google.com/maps/dir/?api=1&destination=${mapQuery}`} target="_blank" rel="noopener">
+          <Icon name="send" size={19} />
+          Get Directions
+        </a>
+      </div>
+
+      <div class="map reveal">
+        <iframe
+          title={`Map showing ${site.name}, ${site.area}, Delhi`}
+          src={`https://www.google.com/maps?q=${mapQuery}&output=embed`}
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"></iframe>
+      </div>
+    </div>
+  </div>
+</section>
