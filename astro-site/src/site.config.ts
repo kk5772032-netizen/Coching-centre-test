@@ -115,6 +115,23 @@ export const site = {
   ],
 } as const;
 
+/**
+ * Build an internal link that survives being served from a sub-path.
+ *
+ * GitHub Pages project sites live at /<repo>/, not at the domain root, so a
+ * hardcoded href="/blog/" 404s there. Astro rewrites asset URLs for you but
+ * not the ones you write by hand, so every internal link goes through this.
+ * On a root deploy (Cloudflare Pages, Netlify, a custom domain) it is a no-op.
+ *
+ *   path('/')            -> '/'            or '/Coching-centre-test/'
+ *   path('/#enquiry')    -> '/#enquiry'    or '/Coching-centre-test/#enquiry'
+ *   path('/blog/')       -> '/blog/'       or '/Coching-centre-test/blog/'
+ */
+export function path(p: string = '/'): string {
+  const base = (import.meta.env.BASE_URL || '/').replace(/\/+$/, '');
+  return `${base}/${p.replace(/^\/+/, '')}`;
+}
+
 /** Build a wa.me link with a pre-filled message. */
 export function waLink(text?: string): string {
   const msg = text ?? `Hi, I want to know about the ${site.primaryExam} batch at ${site.name}.`;

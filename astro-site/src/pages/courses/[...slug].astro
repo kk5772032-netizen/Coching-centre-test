@@ -7,7 +7,7 @@
    --------------------------------------------------------------------------- */
 import { getCollection, render } from 'astro:content';
 import type { GetStaticPaths } from 'astro';
-import { site, waLink, rupees } from '../../site.config';
+import { site, waLink, rupees, path } from '../../site.config';
 import Base from '../../layouts/Base.astro';
 import EnquiryForm from '../../components/EnquiryForm.astro';
 import Faq from '../../components/Faq.astro';
@@ -61,8 +61,8 @@ const schema = {
   <section class="hero hero--course">
     <div class="wrap">
       <nav class="crumbs" aria-label="Breadcrumb">
-        <a href="/">Home</a> <span aria-hidden="true">/</span>
-        <a href="/#courses">Courses</a> <span aria-hidden="true">/</span>
+        <a href={path("/")}>Home</a> <span aria-hidden="true">/</span>
+        <a href={path("/#courses")}>Courses</a> <span aria-hidden="true">/</span>
         <span aria-current="page">{d.title}</span>
       </nav>
       <p class="hero__since">{d.exam}</p>

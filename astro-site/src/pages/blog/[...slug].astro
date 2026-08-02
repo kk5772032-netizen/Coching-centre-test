@@ -1,7 +1,7 @@
 ---
 import { getCollection, render } from 'astro:content';
 import type { GetStaticPaths } from 'astro';
-import { site } from '../../site.config';
+import { site, path } from '../../site.config';
 import Base from '../../layouts/Base.astro';
 
 export const getStaticPaths: GetStaticPaths = async () => {
@@ -27,8 +27,8 @@ const schema = {
   <section class="hero hero--course">
     <div class="wrap">
       <nav class="crumbs" aria-label="Breadcrumb">
-        <a href="/">Home</a> <span aria-hidden="true">/</span>
-        <a href="/blog/">Blog</a> <span aria-hidden="true">/</span>
+        <a href={path("/")}>Home</a> <span aria-hidden="true">/</span>
+        <a href={path("/blog/")}>Blog</a> <span aria-hidden="true">/</span>
         <span aria-current="page">{post.data.tag}</span>
       </nav>
       <h1>{post.data.title}</h1>
@@ -48,7 +48,7 @@ const schema = {
       <aside class="post-cta">
         <h2>Preparing for this exam?</h2>
         <p>Sit in a free demo class at our {site.area} centre before you decide anything. Two classes, no advance payment.</p>
-        <a class="btn btn--primary" href="/#enquiry">Book a free demo class</a>
+        <a class="btn btn--primary" href={path("/#enquiry")}>Book a free demo class</a>
       </aside>
     </div>
   </section>

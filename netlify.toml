@@ -1,0 +1,36 @@
+# Netlify deploy config.
+# Connect the repo at app.netlify.com > Add new site > Import from Git.
+# Everything below is picked up automatically — no dashboard fields to fill.
+
+[build]
+  base    = "astro-site"
+  command = "npm run build"
+  publish = "astro-site/dist"
+
+[build.environment]
+  NODE_VERSION = "20"
+
+# To deploy the single-file version instead, comment out the block above and
+# uncomment this one:
+# [build]
+#   command   = "mkdir -p _site && cp index.html og.png robots.txt sitemap.xml _site/"
+#   publish   = "_site"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options   = "nosniff"
+    X-Frame-Options          = "SAMEORIGIN"
+    Referrer-Policy          = "strict-origin-when-cross-origin"
+    Permissions-Policy       = "geolocation=(), microphone=(), camera=()"
+
+# Hashed assets are immutable — cache them hard.
+[[headers]]
+  for = "/_astro/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/og.png"
+  [headers.values]
+    Cache-Control = "public, max-age=86400"

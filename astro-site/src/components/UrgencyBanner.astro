@@ -1,5 +1,5 @@
 ---
-import { site } from '../site.config';
+import { site, path } from '../site.config';
 const a = site.admission;
 ---
 <aside class="urgency" id="urgencyBar" aria-label="Admission announcement">
@@ -7,7 +7,7 @@ const a = site.admission;
     <span class="dot" aria-hidden="true"></span>
     <span>New <b>{a.batchName}</b> batch starts <b>{a.startDate}</b> &middot; only
       <b>{a.seatsLeft} of {a.seatsTotal} seats</b> left &middot;
-      <a href="/#enquiry">Reserve your seat &rarr;</a></span>
+      <a href={path("/#enquiry")}>Reserve your seat &rarr;</a></span>
     <button class="urgency__close" id="urgencyClose" type="button" aria-label="Dismiss this announcement">&times;</button>
   </div>
 </aside>

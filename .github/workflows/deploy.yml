@@ -1,0 +1,79 @@
+# =============================================================================
+#  Deploy to GitHub Pages
+# =============================================================================
+#  ONE-TIME SETUP (must be done by the repo owner — it cannot be enabled from
+#  a workflow or the API token this project uses):
+#
+#    Repo > Settings > Pages > "Build and deployment" > Source: GitHub Actions
+#
+#  After that, every push to the default branch publishes automatically to
+#    https://<user>.github.io/<repo>/
+#
+#  WHICH VERSION DOES THIS DEPLOY?
+#  Set SITE below to "astro" (multi-page, default) or "single" (index.html).
+# =============================================================================
+name: Deploy site
+
+on:
+  push:
+    branches: [claude/project-access-6gkcqx, main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Never run two deploys at once; let a newer push cancel an in-flight one.
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+env:
+  SITE: astro # "astro" | "single"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure Pages
+        id: pages
+        uses: actions/configure-pages@v5
+
+      - uses: actions/setup-node@v4
+        if: env.SITE == 'astro'
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: astro-site/package-lock.json
+
+      # GitHub Pages serves a project site from a sub-path, so Astro has to
+      # know its base. `steps.pages.outputs.base_path` supplies it.
+      - name: Build Astro site
+        if: env.SITE == 'astro'
+        working-directory: astro-site
+        run: |
+          npm ci
+          npm run build -- --site "${{ steps.pages.outputs.origin }}" --base "${{ steps.pages.outputs.base_path }}"
+
+      - name: Assemble single-file site
+        if: env.SITE == 'single'
+        run: |
+          mkdir -p _site
+          cp index.html og.png robots.txt sitemap.xml _site/
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: ${{ env.SITE == 'astro' && 'astro-site/dist' || '_site' }}
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

@@ -23,17 +23,9 @@
 <meta property="og:description" content="47 selections in SSC CGL 2024. Batch size capped at 40. Daily doubt sessions. 7 minutes from GTB Nagar Metro Gate 3.">
 <meta property="og:url" content="https://www.shikharacademy.in/">
 <meta property="og:locale" content="en_IN">
-<!-- Link preview image. WhatsApp is the main way this link gets shared, so
-     without this every shared link renders as a bare grey box.
-     Must be an absolute URL — update the domain when it changes. -->
-<meta property="og:image" content="https://www.shikharacademy.in/og.png">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Shikhar Academy — SSC CGL and CHSL coaching in Mukherjee Nagar, Delhi. 47 selections in SSC CGL 2024.">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Best SSC CGL Coaching in Mukherjee Nagar, Delhi | Shikhar Academy">
 <meta name="twitter:description" content="47 selections in SSC CGL 2024. Batch size capped at 40. 7 min from GTB Nagar Metro.">
-<meta name="twitter:image" content="https://www.shikharacademy.in/og.png">
 
 <!-- Fonts: preconnect first so the request starts early on slow 4G -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -738,64 +730,6 @@ body{padding-bottom:60px}          /* room for the sticky bar on mobile */
 }
 
 
-
-/* ==========================================================================
-   21. MAP FACADE + DEMO VIDEOS
-   Both are "facades": a cheap local placeholder that only pulls the heavy
-   third-party embed once the visitor actually asks for it. A Google Maps
-   iframe is several hundred KB and a YouTube embed roughly 900 KB — on a 4G
-   connection that is the difference between a usable page and a stalled one.
-   ========================================================================== */
-.map{position:relative}
-.map__load{
-  display:block; width:100%; padding:0; border:0; background:none; cursor:pointer;
-  position:relative; text-align:center; color:var(--navy);
-}
-.map__art{display:block; width:100%; height:auto; aspect-ratio:4/3; object-fit:cover}
-.map__cta{
-  position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);
-  display:inline-flex; align-items:center; gap:9px; white-space:nowrap;
-  background:var(--paper); color:var(--navy); font-weight:700; font-size:16px;
-  padding:13px 22px; border-radius:999px; box-shadow:0 6px 20px rgba(18,38,63,.28);
-  border:1.5px solid var(--navy); min-height:48px;
-  transition:transform .15s ease, background-color .15s ease;
-}
-.map__load:hover .map__cta{background:var(--navy); color:#fff}
-.map__load:active .map__cta{transform:translate(-50%,-50%) scale(.96)}
-.map__note{
-  position:absolute; left:0; right:0; bottom:12px;
-  font-size:12.5px; color:#5c6657; text-shadow:0 1px 0 rgba(255,255,255,.7);
-}
-
-.videos{display:grid; gap:var(--s3)}
-.video{
-  background:rgba(255,255,255,.055); border:1px solid rgba(255,255,255,.13);
-  border-radius:var(--radius); overflow:hidden;
-}
-.video__btn{
-  display:block; width:100%; padding:0; border:0; background:none; cursor:pointer;
-  position:relative; line-height:0;
-}
-.video__poster{display:block; width:100%; height:auto; aspect-ratio:16/9; object-fit:cover}
-.video__play{
-  position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);
-  width:62px; height:62px; border-radius:50%; background:rgba(109,31,40,.94);
-  display:grid; place-items:center; color:#fff;
-  box-shadow:0 6px 22px rgba(0,0,0,.4); transition:transform .16s ease, background-color .16s ease;
-}
-.video__btn:hover .video__play{background:#8a2733; transform:translate(-50%,-50%) scale(1.07)}
-.video__body{padding:var(--s2) var(--s2) var(--s3); line-height:1.5}
-.video__title{font-family:var(--font-head); font-size:17px; font-weight:700; color:#fff; margin:0 0 4px}
-.video__meta{font-size:14px; color:#b9c8d8; margin:0}
-.video iframe{width:100%; aspect-ratio:16/9; border:0; display:block}
-.video__soon{
-  display:inline-block; margin-top:6px; font-size:12px; font-weight:700;
-  letter-spacing:.09em; text-transform:uppercase; color:var(--amber-light);
-}
-@media (min-width:768px){
-  .videos{grid-template-columns:repeat(3,1fr)}
-}
-
 /* ==========================================================================
    20. MOTION
    Rules of the house, so this stays fast on a mid-range Android:
@@ -942,7 +876,6 @@ body{padding-bottom:60px}          /* room for the sticky bar on mobile */
         <li><a href="#courses">Courses</a></li>
         <li><a href="#centre">Centre</a></li>
         <li><a href="#faculty">Faculty</a></li>
-        <li><a href="#watch">Videos</a></li>
         <li><a href="#results">Results</a></li>
         <li><a href="#fees">Fees</a></li>
         <li><a href="#contact">Contact</a></li>
@@ -965,7 +898,6 @@ body{padding-bottom:60px}          /* room for the sticky bar on mobile */
       <a href="#courses">Courses</a>
       <a href="#centre">Centre</a>
       <a href="#faculty">Faculty</a>
-      <a href="#watch">Videos</a>
       <a href="#results">Results</a>
       <a href="#fees">Fees</a>
       <a href="#contact">Contact</a>
@@ -978,7 +910,6 @@ body{padding-bottom:60px}          /* room for the sticky bar on mobile */
         <a href="#courses">Courses</a>
         <a href="#centre">Centre</a>
         <a href="#faculty">Faculty</a>
-        <a href="#watch">Videos</a>
         <a href="#results">Results</a>
         <a href="#fees">Fees</a>
         <a href="#contact">Contact</a>
@@ -1574,37 +1505,6 @@ body{padding-bottom:60px}          /* room for the sticky bar on mobile */
 </section>
 
 <!-- ==========================================================================
-     SECTION 6b — WATCH A CLASS (faculty demo lectures)
-
-     >>> HOW TO PUT REAL VIDEOS IN <<<
-     Put the YouTube video IDs in the CONFIG block at the bottom of this file
-     (`videos`). The ID is the part after v= in a YouTube URL:
-        https://www.youtube.com/watch?v=dQw4w9WgXcQ  ->  dQw4w9WgXcQ
-
-     Nothing is loaded from YouTube until the visitor taps play — a normal
-     YouTube embed costs ~900 KB per video before anyone watches anything.
-     ========================================================================== -->
-<section class="section band-navy" id="watch">
-  <div class="wrap">
-    <div class="section-head reveal">
-      <p class="eyebrow">Watch before you decide</p>
-      <h2>See a real class</h2>
-      <p class="lede">Unedited clips from actual running batches — not a promotional film. If the teaching style suits you, come for a free demo.</p>
-    </div>
-
-    <div class="videos" id="videoGrid">
-      <!-- Cards are written here by CONFIG.videos so a non-developer only
-           edits the list at the bottom of the file, not this markup. -->
-    </div>
-
-    <noscript>
-      <p class="lede">Video clips need JavaScript. Visit our
-        <a href="https://www.youtube.com/@shikharacademy" style="color:#f5b843">YouTube channel</a> instead.</p>
-    </noscript>
-  </div>
-</section>
-
-<!-- ==========================================================================
      SECTION 7 — RESULTS / TOPPERS (maroon band, horizontal scroll on mobile)
      Update the three big numbers and the topper cards after every result.
 
@@ -1921,41 +1821,12 @@ body{padding-bottom:60px}          /* room for the sticky bar on mobile */
         </a>
       </div>
 
-      <!-- Map facade: Google's embed pulls several hundred KB, so it is only
-           loaded when the visitor asks for it. Everything they actually need
-           — the address and the Get Directions link — is above, in text. -->
-      <div class="map reveal" id="mapHolder"
-           data-src="https://www.google.com/maps?q=Dr%20Mukherjee%20Nagar%2C%20Delhi%20110009&amp;output=embed">
-        <button class="map__load" type="button" id="mapLoad">
-          <svg viewBox="0 0 400 300" class="map__art" aria-hidden="true">
-            <rect width="400" height="300" fill="#e8eadf"/>
-            <g stroke="#cdd2c2" stroke-width="10" fill="none">
-              <path d="M-10 70h420M-10 210h420M90 -10v320M290 -10v320"/>
-            </g>
-            <g stroke="#fff" stroke-width="4" fill="none">
-              <path d="M-10 70h420M-10 210h420M90 -10v320M290 -10v320"/>
-            </g>
-            <rect x="16" y="88" width="58" height="46" fill="#dbe0d0"/>
-            <rect x="112" y="92" width="70" height="40" fill="#dbe0d0"/>
-            <rect x="210" y="96" width="62" height="38" fill="#dbe0d0"/>
-            <rect x="312" y="88" width="70" height="48" fill="#dbe0d0"/>
-            <rect x="24" y="230" width="52" height="44" fill="#dbe0d0"/>
-            <rect x="128" y="234" width="120" height="40" fill="#dbe0d0"/>
-            <rect x="300" y="228" width="70" height="46" fill="#dbe0d0"/>
-            <path d="M200 118c-13 0-24 11-24 24 0 18 24 44 24 44s24-26 24-44c0-13-11-24-24-24z" fill="#6d1f28"/>
-            <circle cx="200" cy="141" r="8.5" fill="#fff"/>
-          </svg>
-          <span class="map__cta">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-            Load the map
-          </span>
-          <span class="map__note">Loads Google Maps &middot; uses extra data</span>
-        </button>
-        <noscript>
-          <a class="btn btn--outline btn--block" style="margin:16px"
-             href="https://www.google.com/maps/dir/?api=1&amp;destination=Batra+Complex+Dr+Mukherjee+Nagar+Delhi+110009"
-             target="_blank" rel="noopener">Open in Google Maps</a>
-        </noscript>
+      <div class="map reveal">
+        <iframe
+          title="Map showing Shikhar Academy, Dr Mukherjee Nagar, Delhi"
+          src="https://www.google.com/maps?q=Dr%20Mukherjee%20Nagar%2C%20Delhi%20110009&amp;output=embed"
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"></iframe>
       </div>
     </div>
   </div>
@@ -2147,43 +2018,7 @@ var CONFIG = {
 
   /* --- Default WhatsApp message ------------------------------------------ */
   primaryExam:   "SSC CGL",
-  defaultWaText: "Hi, I want to know about the SSC CGL batch at Shikhar Academy.",
-
-  /* --- LEAD CAPTURE ------------------------------------------------------
-     Paste the Google Apps Script web-app URL here and every enquiry is saved
-     to a Google Sheet the moment the form is submitted — even if the student
-     never presses send in WhatsApp. Setup takes 10 minutes and costs nothing;
-     the steps are in lead-capture/Code.gs.
-
-     Leave it as "" and the form still works exactly as before (WhatsApp only),
-     it just does not keep a record.                                         */
-  leadEndpoint: "",
-
-  /* --- DEMO LECTURE VIDEOS -----------------------------------------------
-     Add the YouTube ID and a short label for each clip. An empty list hides
-     the whole "See a real class" section, so it never shows empty.
-     Leave `id` blank to show the placeholder card instead of a real video.  */
-  videos: [
-    { id: "", title: "Advance Maths — Geometry basics", teacher: "Rajeev Ranjan", length: "8 min" },
-    { id: "", title: "English — Reading comprehension approach", teacher: "Sunita Rawat", length: "6 min" },
-    { id: "", title: "Reasoning — Time management in Tier 1", teacher: "Amit Kumar Yadav", length: "9 min" }
-  ],
-
-  /* --- ANALYTICS ---------------------------------------------------------
-     provider: "plausible" | "umami" | "ga4" | ""  ("" = no analytics, no
-     script loaded, no cookie banner needed).
-
-     Plausible and Umami are recommended over GA4 here: ~1 KB instead of
-     ~50 KB, which matters on the 4G connections most visitors are using.
-       plausible -> domain  = the site's domain
-       umami     -> siteId  = the website ID, src = your Umami host
-       ga4       -> siteId  = the G-XXXXXXX measurement ID                   */
-  analytics: {
-    provider: "",
-    domain:   "shikharacademy.in",
-    siteId:   "",
-    src:      "https://plausible.io/js/script.js"
-  }
+  defaultWaText: "Hi, I want to know about the SSC CGL batch at Shikhar Academy."
 };
 
 /* ==========================================================================
@@ -2197,70 +2032,6 @@ var CONFIG = {
   /* --- Build a wa.me link from a message --------------------------------- */
   function waLink(text) {
     return "https://wa.me/" + CONFIG.whatsapp + "?text=" + encodeURIComponent(text || CONFIG.defaultWaText);
-  }
-
-  /* --- Analytics ---------------------------------------------------------
-     Nothing is loaded unless a provider is configured, so the default build
-     ships zero third-party JavaScript.                                      */
-  function initAnalytics() {
-    var a = CONFIG.analytics || {};
-    if (!a.provider) return;
-    var sc = document.createElement("script");
-    sc.defer = true;
-
-    if (a.provider === "plausible") {
-      sc.src = a.src || "https://plausible.io/js/script.js";
-      sc.setAttribute("data-domain", a.domain);
-    } else if (a.provider === "umami") {
-      sc.src = a.src;
-      sc.setAttribute("data-website-id", a.siteId);
-    } else if (a.provider === "ga4") {
-      sc.src = "https://www.googletagmanager.com/gtag/js?id=" + a.siteId;
-      window.dataLayer = window.dataLayer || [];
-      window.gtag = function () { window.dataLayer.push(arguments); };
-      window.gtag("js", new Date());
-      window.gtag("config", a.siteId);
-    } else {
-      return;
-    }
-    document.head.appendChild(sc);
-  }
-  initAnalytics();
-
-  /* Fire a named event at whichever provider is configured. Safe to call
-     when analytics is switched off — it simply does nothing.               */
-  function track(name, props) {
-    var p = (CONFIG.analytics && CONFIG.analytics.provider) || "";
-    try {
-      if (p === "plausible" && window.plausible) window.plausible(name, { props: props || {} });
-      else if (p === "umami" && window.umami) window.umami.track(name, props || {});
-      else if (p === "ga4" && window.gtag) window.gtag("event", name, props || {});
-    } catch (e) { /* analytics must never break the page */ }
-  }
-
-  /* --- Send a lead to the Google Sheet ------------------------------------
-     sendBeacon is used deliberately: it is fire-and-forget, survives the page
-     being navigated away from, and (with a form-urlencoded body) avoids a
-     CORS preflight that Apps Script would reject. If it is unavailable we
-     fall back to fetch with keepalive. Either way we never await the result,
-     because the student must not wait on our logging.                       */
-  function sendLead(data) {
-    if (!CONFIG.leadEndpoint) return false;
-    try {
-      var body = new URLSearchParams(data).toString();
-      var blob = new Blob([body], { type: "application/x-www-form-urlencoded" });
-      if (navigator.sendBeacon && navigator.sendBeacon(CONFIG.leadEndpoint, blob)) return true;
-      fetch(CONFIG.leadEndpoint, {
-        method: "POST",
-        mode: "no-cors",
-        keepalive: true,
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: body
-      }).catch(function () {});
-      return true;
-    } catch (e) {
-      return false;
-    }
   }
 
   /* --- Apply CONFIG to the page ------------------------------------------ */
@@ -2300,21 +2071,6 @@ var CONFIG = {
   }
   applyConfig();
 
-  /* --- Outbound click tracking -------------------------------------------
-     Tells the client which CTA actually produces conversations: the hero
-     button, a specific course card, the float, or the mobile bar.          */
-  Array.prototype.forEach.call(document.querySelectorAll("[data-wa]"), function (a) {
-    a.addEventListener("click", function () {
-      track("whatsapp_click", {
-        source: a.getAttribute("data-wa") || "unknown",
-        course: a.getAttribute("data-course") || ""
-      });
-    });
-  });
-  Array.prototype.forEach.call(document.querySelectorAll("[data-tel]"), function (a) {
-    a.addEventListener("click", function () { track("call_click", {}); });
-  });
-
   /* --- Mobile menu -------------------------------------------------------- */
   var menuBtn = document.getElementById("menuBtn");
   var mobileNav = document.getElementById("mobileNav");
@@ -2341,84 +2097,6 @@ var CONFIG = {
       menuBtn.focus();
     }
   });
-
-  /* --- Map facade: swap the placeholder for the real iframe on demand ----- */
-  var mapHolder = document.getElementById("mapHolder");
-  var mapLoad = document.getElementById("mapLoad");
-  if (mapHolder && mapLoad) {
-    mapLoad.addEventListener("click", function () {
-      var frame = document.createElement("iframe");
-      frame.title = "Map showing " + CONFIG.name + ", " + CONFIG.addressLine2;
-      frame.src = mapHolder.getAttribute("data-src");
-      frame.loading = "lazy";
-      frame.referrerPolicy = "no-referrer-when-downgrade";
-      mapHolder.innerHTML = "";
-      mapHolder.appendChild(frame);
-      track("map_load", {});
-    });
-  }
-
-  /* --- Demo lecture cards -------------------------------------------------
-     Built from CONFIG.videos. Nothing is requested from YouTube until the
-     visitor taps play; until then the poster is a local inline SVG.        */
-  var videoGrid = document.getElementById("videoGrid");
-  if (videoGrid) {
-    var videos = CONFIG.videos || [];
-    if (!videos.length) {
-      var sec = document.getElementById("watch");
-      if (sec) sec.remove();
-    } else {
-      videos.forEach(function (v, i) {
-        var card = document.createElement("div");
-        card.className = "video reveal";
-
-        var poster =
-          '<svg class="video__poster" viewBox="0 0 320 180" role="img" aria-label="Video thumbnail placeholder">' +
-            '<rect width="320" height="180" fill="' + (i % 2 ? "#1d3a5c" : "#16304f") + '"/>' +
-            '<rect x="30" y="26" width="150" height="86" rx="4" fill="#f4f2ec"/>' +
-            '<g stroke="#8fa0b3" stroke-width="5" stroke-linecap="round">' +
-              '<path d="M46 50h84M46 68h108M46 86h64"/></g>' +
-            '<g stroke="#e0901c" stroke-width="5" stroke-linecap="round"><path d="M46 102h56"/></g>' +
-            '<circle cx="236" cy="74" r="20" fill="#6d1f28"/>' +
-            '<path d="M206 130a30 30 0 0 1 60 0z" fill="#6d1f28"/>' +
-          '</svg>';
-
-        if (v.id) {
-          card.innerHTML =
-            '<button class="video__btn" type="button" data-yt="' + v.id + '" ' +
-              'aria-label="Play: ' + v.title.replace(/"/g, "&quot;") + '">' +
-              poster +
-              '<span class="video__play" aria-hidden="true">' +
-                '<svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z"/></svg>' +
-              '</span>' +
-            '</button>' +
-            '<div class="video__body"><p class="video__title">' + v.title + '</p>' +
-            '<p class="video__meta">' + v.teacher + ' &middot; ' + v.length + '</p></div>';
-        } else {
-          // No video ID yet — show the card without a play affordance that lies.
-          card.innerHTML =
-            '<div class="video__btn" style="cursor:default">' + poster + '</div>' +
-            '<div class="video__body"><p class="video__title">' + v.title + '</p>' +
-            '<p class="video__meta">' + v.teacher + ' &middot; ' + v.length + '</p>' +
-            '<span class="video__soon">Clip coming soon</span></div>';
-        }
-        videoGrid.appendChild(card);
-      });
-
-      videoGrid.addEventListener("click", function (e) {
-        var btn = e.target.closest("[data-yt]");
-        if (!btn) return;
-        var id = btn.getAttribute("data-yt");
-        var frame = document.createElement("iframe");
-        frame.src = "https://www.youtube-nocookie.com/embed/" + id + "?autoplay=1&rel=0";
-        frame.title = btn.getAttribute("aria-label") || "Demo lecture";
-        frame.allow = "accelerometer; autoplay; encrypted-media; picture-in-picture";
-        frame.allowFullscreen = true;
-        btn.replaceWith(frame);
-        track("video_play", { id: id });
-      });
-    }
-  }
 
   /* --- Dismissible admission banner (no storage used) --------------------- */
   var bar = document.getElementById("urgencyBar");
@@ -2491,16 +2169,7 @@ var CONFIG = {
     successName.textContent = name.split(" ")[0] +
       ", your details are ready in a WhatsApp message - just press send. If the tab did not open, tap the button below.";
 
-    /* Log the lead FIRST. This is the whole point: if the student never
-       presses send in WhatsApp, the institute still has their number. */
-    var logged = sendLead({
-      name: name, mobile: mobile, exam: exam, status: status,
-      timing: timing, message: message, course: "",
-      page: location.pathname || "/", opened: "true"
-    });
-    track("enquiry_submit", { exam: exam, timing: timing, logged: logged ? "yes" : "no" });
-
-    // Then open WhatsApp, and show the success state either way
+    // Open WhatsApp, then show the success state either way
     window.open(url, "_blank", "noopener");
     form.style.display = "none";
     success.classList.add("is-shown");

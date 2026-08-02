@@ -1,6 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
-import { site } from '../../site.config';
+import { site, path } from '../../site.config';
 import Base from '../../layouts/Base.astro';
 
 const posts = (await getCollection('posts', ({ data }) => !data.draft))
@@ -26,7 +26,7 @@ const fmt = (d: Date) => d.toLocaleDateString('en-IN', { day: 'numeric', month: 
         {posts.map((post) => (
           <article class="post-card reveal">
             <p class="post-card__tag">{post.data.tag}</p>
-            <h2><a href={`/blog/${post.id}/`}>{post.data.title}</a></h2>
+            <h2><a href={path(`/blog/${post.id}/`)}>{post.data.title}</a></h2>
             <p class="post-card__desc">{post.data.description}</p>
             <p class="post-card__date"><time datetime={post.data.date.toISOString()}>{fmt(post.data.date)}</time></p>
           </article>

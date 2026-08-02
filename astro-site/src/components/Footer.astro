@@ -1,5 +1,5 @@
 ---
-import { site, waLink } from '../site.config';
+import { site, waLink, path } from '../site.config';
 import Crest from './Crest.astro';
 import WhatsAppIcon from './WhatsAppIcon.astro';
 const year = new Date().getFullYear();
@@ -35,12 +35,12 @@ const year = new Date().getFullYear();
       <div>
         <h4>Quick links</h4>
         <ul>
-          <li><a href="/#courses">Courses &amp; batches</a></li>
-          <li><a href="/#centre">Inside the centre</a></li>
-          <li><a href="/#faculty">Our faculty</a></li>
-          <li><a href="/#results">Results</a></li>
-          <li><a href="/blog/">Blog</a></li>
-          <li><a href="/#enquiry">Book a demo class</a></li>
+          <li><a href={path("/#courses")}>Courses &amp; batches</a></li>
+          <li><a href={path("/#centre")}>Inside the centre</a></li>
+          <li><a href={path("/#faculty")}>Our faculty</a></li>
+          <li><a href={path("/#results")}>Results</a></li>
+          <li><a href={path("/blog/")}>Blog</a></li>
+          <li><a href={path("/#enquiry")}>Book a demo class</a></li>
         </ul>
       </div>
 

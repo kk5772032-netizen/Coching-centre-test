@@ -1,11 +1,11 @@
 ---
-import { site } from '../site.config';
+import { site, path } from '../site.config';
 import Crest from './Crest.astro';
 import Icon from './Icon.astro';
 ---
 <header class="header">
   <div class="wrap header__bar">
-    <a class="brand" href="/" aria-label={`${site.name} — home`}>
+    <a class="brand" href={path("/")} aria-label={`${site.name} — home`}>
       <Crest class="brand__mark" />
       <span>
         <span class="brand__name">{site.name}</span>
@@ -15,7 +15,7 @@ import Icon from './Icon.astro';
 
     <nav class="nav" aria-label="Main">
       <ul>
-        {site.nav.map((item) => <li><a href={item.href}>{item.label}</a></li>)}
+        {site.nav.map((item) => <li><a href={path(item.href)}>{item.label}</a></li>)}
       </ul>
     </nav>
 
@@ -33,14 +33,14 @@ import Icon from './Icon.astro';
 
   <nav class="mobile-nav" id="mobileNav" aria-label="Mobile">
     <div class="wrap">
-      {site.nav.map((item) => <a href={item.href}>{item.label}</a>)}
+      {site.nav.map((item) => <a href={path(item.href)}>{item.label}</a>)}
     </div>
   </nav>
 
   <noscript>
     <nav class="mobile-nav is-open" aria-label="Main (no JavaScript)">
       <div class="wrap">
-        {site.nav.map((item) => <a href={item.href}>{item.label}</a>)}
+        {site.nav.map((item) => <a href={path(item.href)}>{item.label}</a>)}
       </div>
     </nav>
   </noscript>

@@ -115,12 +115,26 @@ value and update the visible text too.
 
 ---
 
-## 2b. Two things to switch on before launch
+## 2b. Not currently wired into this file
 
-Both are wired up and switched **off** by default, so the site works either
-way — but leaving them off is leaving money on the table.
+`index.html` was deliberately rolled back to the leaner build. The following
+are **not** in it right now — they exist in `astro-site/` and can be dropped
+back into the single file whenever you want them (see git history, commit
+`aa5a591`):
 
-### Lead capture (do this first)
+- lead capture, so a student who never presses send in WhatsApp is still recorded
+- analytics and WhatsApp-click tracking
+- `og:image`, so shared links have a preview instead of a grey box
+- click-to-load map facade (the Google embed currently loads on every visit)
+- the "See a real class" demo-lecture video section
+
+The consequence worth knowing: **an enquiry that does not reach WhatsApp is
+lost.** The backend that fixes it is still in `lead-capture/Code.gs` and takes
+about 10 minutes to set up whenever you want it.
+
+The instructions below still apply to `astro-site/`.
+
+### Lead capture
 
 Without it, a student who fills the form but never presses send in WhatsApp is
 lost completely. With it, every enquiry lands in a Google Sheet the moment the
