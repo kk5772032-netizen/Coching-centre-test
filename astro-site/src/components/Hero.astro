@@ -7,11 +7,11 @@ const s = site.stats;
 <section class="hero" id="top">
   <div class="wrap hero__grid">
     <div>
-      <p class="hero__since">{site.area} &middot; Since {site.foundedYear}</p>
-      <h1>SSC CGL &amp; CHSL Coaching in <span class="accent">{site.area}</span>, Delhi</h1>
-      <p class="hero__tag">Classroom and online batches for SSC CGL, CHSL, MTS, CPO and Delhi Police — taught by faculty who have cleared these exams themselves.</p>
+      <p class="hero__since anim-in anim-d1">{site.area} &middot; Since {site.foundedYear}</p>
+      <h1 class="anim-in anim-d2">SSC CGL &amp; CHSL Coaching in <span class="accent">{site.area}</span>, Delhi</h1>
+      <p class="hero__tag anim-in anim-d3">Classroom and online batches for SSC CGL, CHSL, MTS, CPO and Delhi Police — taught by faculty who have cleared these exams themselves.</p>
 
-      <div class="hero__cta">
+      <div class="hero__cta anim-in anim-d4">
         <a class="btn btn--primary" href="#enquiry">
           <Icon name="calendar" size={19} />
           Book Free Demo Class
@@ -22,7 +22,7 @@ const s = site.stats;
         </a>
       </div>
 
-      <div class="trust">
+      <div class="trust anim-in anim-d5">
         <div><b data-count={s.yearsRunning} data-suffix="+">{s.yearsRunning}+</b><span>Years running</span></div>
         <div><b data-count={s.studentsTaught} data-suffix="+">{s.studentsTaught.toLocaleString('en-IN')}+</b><span>Students taught</span></div>
         <div><b data-count={s.totalSelections} data-suffix="+">{s.totalSelections}+</b><span>Total selections</span></div>
@@ -30,7 +30,7 @@ const s = site.stats;
       </div>
     </div>
 
-    <aside class="proof reveal" aria-label="Result highlight">
+    <aside class="proof anim-in anim-d6" aria-label="Result highlight">
       <div class="proof__head">
         <p class="eyebrow eyebrow--dark">Result Declaration</p>
         <p class="proof__session">Session {s.resultYear}&ndash;{String(s.resultYear + 1).slice(2)}</p>

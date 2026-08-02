@@ -726,3 +726,112 @@ body{padding-bottom:60px}          /* room for the sticky bar on mobile */
   .prose-wrap{grid-template-columns:1fr 320px; gap:var(--s6); align-items:start}
   .sticky-card{position:sticky; top:96px}
 }
+
+/* ==========================================================================
+   20. MOTION
+   Rules of the house, so this stays fast on a mid-range Android:
+   - only `transform` and `opacity` are animated (the compositor handles both,
+     so nothing here triggers layout or paint)
+   - every animation lives inside `prefers-reduced-motion: no-preference`,
+     which means the *default* state is fully visible content. Nothing on the
+     page depends on an animation actually running.
+   ========================================================================== */
+
+/* --- Scroll progress bar ------------------------------------------------- */
+.progress{
+  position:fixed; top:0; left:0; right:0; height:3px; z-index:95;
+  pointer-events:none; background:transparent;
+}
+.progress__bar{
+  height:100%; background:linear-gradient(90deg,var(--amber),var(--amber-light));
+  transform:scaleX(0); transform-origin:0 50%;
+}
+
+/* --- Header lifts once you scroll off the top ---------------------------- */
+.header{transition:box-shadow .25s ease}
+.header.is-stuck{box-shadow:0 8px 26px rgba(0,0,0,.32)}
+
+/* --- Horizontal row controls --------------------------------------------- */
+.row__nav{display:none; gap:8px; margin-top:var(--s2)}
+.row__btn{
+  width:46px; height:46px; flex:none; border-radius:50%; cursor:pointer;
+  display:grid; place-items:center;
+  background:var(--paper); color:var(--navy); border:1.5px solid var(--line);
+  transition:transform .15s ease, background-color .15s ease, opacity .15s ease;
+}
+.row__btn:hover{background:var(--navy); color:#fff; border-color:var(--navy)}
+.row__btn:active{transform:scale(.92)}
+.row__btn[disabled]{opacity:.35; cursor:default}
+.row__btn[disabled]:hover{background:var(--paper); color:var(--navy); border-color:var(--line)}
+.band-maroon .row__btn{background:transparent; color:#fff; border-color:rgba(255,255,255,.45)}
+.band-maroon .row__btn:hover{background:#fff; color:var(--maroon)}
+.band-maroon .row__btn[disabled]:hover{background:transparent; color:#fff; border-color:rgba(255,255,255,.45)}
+/* Only shown when JS is running and there is a real pointer to click with */
+@media (hover:hover) and (pointer:fine){
+  body:not(.no-js) .row__nav{display:flex}
+}
+
+@media (prefers-reduced-motion:no-preference){
+
+  /* --- Hero entrance sequence -------------------------------------------
+     Pure CSS, so it starts painting immediately instead of waiting for the
+     IntersectionObserver to boot. Staggered by ~90ms per element.          */
+  @keyframes riseIn{
+    from{opacity:0; transform:translateY(18px)}
+    to{opacity:1; transform:none}
+  }
+  @keyframes riseInSoft{
+    from{opacity:0; transform:translateY(26px) scale(.985)}
+    to{opacity:1; transform:none}
+  }
+  .anim-in{opacity:0; animation:riseIn .6s cubic-bezier(.22,.72,.28,1) both}
+  .anim-d1{animation-delay:.06s}
+  .anim-d2{animation-delay:.15s}
+  .anim-d3{animation-delay:.24s}
+  .anim-d4{animation-delay:.33s}
+  .anim-d5{animation-delay:.42s}
+  .anim-d6{animation-delay:.5s; animation-name:riseInSoft; animation-duration:.75s}
+
+  /* --- Accordion: fade the answer in rather than snapping ---------------- */
+  @keyframes answerIn{
+    from{opacity:0; transform:translateY(-6px)}
+    to{opacity:1; transform:none}
+  }
+  .faq details[open] .answer{animation:answerIn .26s ease both}
+
+  /* --- WhatsApp float: a slow attention ring, not a constant throb -------
+     A ring rather than a filled pulse, so it never obscures the icon.      */
+  .wa-float::after{
+    content:""; position:absolute; inset:-2px; border-radius:50%;
+    border:2px solid #157a45; animation:waRing 3.4s ease-out infinite;
+  }
+  @keyframes waRing{
+    0%{transform:scale(1); opacity:.7}
+    60%,100%{transform:scale(1.75); opacity:0}
+  }
+
+  /* --- Urgency banner slides down instead of appearing ------------------- */
+  @keyframes barIn{from{opacity:0; transform:translateY(-100%)} to{opacity:1; transform:none}}
+  .urgency{animation:barIn .45s cubic-bezier(.22,.72,.28,1) .55s both}
+
+  .progress__bar{transition:transform .1s linear}
+}
+
+/* Reduced motion: nothing above runs, and the attention ring is removed. */
+@media (prefers-reduced-motion:reduce){
+  .wa-float::after{display:none}
+  .progress{display:none}
+}
+
+/* --- Cross-page view transitions (multi-page version only) ----------------
+   Navigating from the homepage to a course page fades rather than flashing
+   white. Browsers without the View Transitions API just navigate normally. */
+@media (prefers-reduced-motion:no-preference){
+  /* Native cross-document transitions — no JS router involved, so scripts on
+     each page still run normally. Unsupported browsers just navigate. */
+  @view-transition{navigation:auto}
+  ::view-transition-old(root){animation:vtOut .18s ease both}
+  ::view-transition-new(root){animation:vtIn .28s ease both}
+  @keyframes vtOut{to{opacity:0}}
+  @keyframes vtIn{from{opacity:0; transform:translateY(8px)} to{opacity:1; transform:none}}
+}

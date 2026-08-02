@@ -3,6 +3,7 @@
    To use a real photograph instead, give the gallery entry a `photo` field in
    site.config.ts — this component renders an <img> when one is present. */
 import { gallery } from '../site.config';
+import RowNav from './RowNav.astro';
 
 const scenes: Record<string, string> = {
   'building': `<svg viewBox="0 0 400 300" role="img" aria-label="Illustration of the institute building: a three-storey commercial block with the signboard above the entrance">
@@ -163,7 +164,7 @@ const scenes: Record<string, string> = {
     </div>
   </div>
 
-  <ul class="gallery__strip reveal">
+  <ul class="gallery__strip reveal" id="galleryRow">
     {gallery.map((item) => (
       <li>
         <figure>
@@ -175,6 +176,7 @@ const scenes: Record<string, string> = {
   </ul>
 
   <div class="wrap">
+    <RowNav target="#galleryRow" label="gallery" />
     <p class="gallery__note reveal">Illustrations shown above are placeholders. Replace them with photographs of the actual centre before going live.</p>
   </div>
 </section>

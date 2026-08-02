@@ -86,6 +86,7 @@ const favicon = `data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' view
 
 <body class="no-js">
   <a class="skip" href="#main">Skip to main content</a>
+  <div class="progress" aria-hidden="true"><div class="progress__bar" id="progressBar"></div></div>
   <Header />
   <main id="main">
     <slot />
@@ -125,6 +126,47 @@ const favicon = `data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' view
 
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const items = document.querySelectorAll('.reveal');
+
+    // Scroll progress bar + header elevation, throttled to one rAF per frame.
+    const progressBar = document.getElementById('progressBar');
+    const header = document.querySelector('.header');
+    let ticking = false;
+    const onScroll = () => {
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      const pct = max > 0 ? Math.min(window.scrollY / max, 1) : 0;
+      if (progressBar) progressBar.style.transform = `scaleX(${pct})`;
+      header?.classList.toggle('is-stuck', window.scrollY > 8);
+      ticking = false;
+    };
+    window.addEventListener('scroll', () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(onScroll);
+    }, { passive: true });
+    onScroll();
+
+    // Prev/next controls for the horizontal rows.
+    document.querySelectorAll('.row__nav').forEach((nav) => {
+      const sel = nav.querySelector('[data-row]')?.getAttribute('data-row');
+      const row = sel ? document.querySelector(sel) : null;
+      if (!row) return;
+      const buttons = nav.querySelectorAll<HTMLButtonElement>('[data-dir]');
+      const step = () => {
+        const card = row.querySelector('li');
+        return card ? card.getBoundingClientRect().width + 16 : row.clientWidth * 0.8;
+      };
+      const sync = () => {
+        buttons[0].disabled = row.scrollLeft <= 0;
+        buttons[1].disabled = row.scrollLeft >= row.scrollWidth - row.clientWidth - 1;
+      };
+      buttons.forEach((btn) => btn.addEventListener('click', () => {
+        const dir = Number(btn.getAttribute('data-dir'));
+        row.scrollBy({ left: dir * step(), behavior: reduce ? 'auto' : 'smooth' });
+      }));
+      row.addEventListener('scroll', sync, { passive: true });
+      window.addEventListener('resize', sync);
+      sync();
+    });
 
     if (!reduce && 'IntersectionObserver' in window) {
       const countUp = (el: Element) => {

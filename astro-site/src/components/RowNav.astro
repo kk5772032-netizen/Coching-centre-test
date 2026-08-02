@@ -1,0 +1,15 @@
+---
+/* Prev/next controls for a horizontal scroll row.
+   Hidden unless JavaScript is running AND the device has a real pointer —
+   on touch the row is already swipeable, so arrows would just be clutter. */
+interface Props { target: string; label: string }
+const { target, label } = Astro.props;
+---
+<div class="row__nav">
+  <button class="row__btn" type="button" data-row={target} data-dir="-1" aria-label={`Scroll ${label} left`}>
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18 9 12l6-6"/></svg>
+  </button>
+  <button class="row__btn" type="button" data-row={target} data-dir="1" aria-label={`Scroll ${label} right`}>
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+  </button>
+</div>

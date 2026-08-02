@@ -12,7 +12,11 @@ and the Google Maps embed.
 
 - **Page weight:** ~87 KB raw, ~22 KB gzipped (plus ~50 KB of fonts on first load)
 - **Tested at:** 360px, 768px, 1024px, 1440px — no horizontal overflow at any width
-- **Works with JavaScript disabled** for all content; JS only enhances (menu, form, reveals)
+- **Works with JavaScript disabled** for all content; JS only enhances (menu, form, motion)
+- **Motion:** hero entrance, scroll progress, count-up stats, hover depth, carousel
+  arrows. Everything animates `transform`/`opacity` only and is wrapped in
+  `prefers-reduced-motion: no-preference`, so the default state is fully visible
+  content — nothing depends on an animation running
 
 ---
 

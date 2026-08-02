@@ -2,6 +2,7 @@
 import { getCollection } from 'astro:content';
 import { site } from '../site.config';
 import TopperCard from './TopperCard.astro';
+import RowNav from './RowNav.astro';
 
 const toppers = (await getCollection('toppers')).sort((a, b) => a.data.order - b.data.order);
 const s = site.stats;
@@ -19,10 +20,11 @@ const s = site.stats;
       <div><b data-count={s.selectionRate} data-suffix="%">{s.selectionRate}%</b><span>Selection rate</span></div>
     </div>
 
-    <ul class="hscroll reveal">
+    <ul class="hscroll reveal" id="toppersRow">
       {toppers.map((topper) => <TopperCard topper={topper} />)}
     </ul>
     <p class="scroll-hint">&larr; Swipe to see more selections</p>
+    <RowNav target="#toppersRow" label="results" />
 
     <p class="disclaimer">Results are as declared by the institute on the basis of student-submitted score cards. Selection depends on the candidate's own effort; no institute can guarantee a result.</p>
   </div>
