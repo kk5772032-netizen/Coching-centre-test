@@ -77,11 +77,38 @@ export const site = {
     facebook: 'https://www.facebook.com/shikharacademy',
   },
 
+  /* --- LEAD CAPTURE ------------------------------------------------------
+     Google Apps Script web-app URL. Every enquiry is written to a Sheet the
+     moment the form is submitted, so a student who never presses send in
+     WhatsApp is still recorded. Setup steps: ../lead-capture/Code.gs
+     Leave "" and the form works exactly as before, just without a record.  */
+  leadEndpoint: '',
+
+  /* --- ANALYTICS ---------------------------------------------------------
+     provider: 'plausible' | 'umami' | 'ga4' | ''  ('' loads no script at all)
+     Plausible/Umami are ~1 KB vs GA4's ~50 KB, which matters on 4G.        */
+  analytics: {
+    provider: '' as 'plausible' | 'umami' | 'ga4' | '',
+    domain: 'shikharacademy.in',
+    siteId: '',
+    src: 'https://plausible.io/js/script.js',
+  },
+
+  /* --- DEMO LECTURE VIDEOS -----------------------------------------------
+     YouTube IDs (the part after v= in the URL). Leave `id` empty to show the
+     placeholder card; an empty list hides the section entirely.            */
+  videos: [
+    { id: '', title: 'Advance Maths — Geometry basics', teacher: 'Rajeev Ranjan', length: '8 min' },
+    { id: '', title: 'English — Reading comprehension approach', teacher: 'Sunita Rawat', length: '6 min' },
+    { id: '', title: 'Reasoning — Time management in Tier 1', teacher: 'Amit Kumar Yadav', length: '9 min' },
+  ],
+
   /* --- Navigation --------------------------------------------------------- */
   nav: [
     { label: 'Courses', href: '/#courses' },
     { label: 'Centre', href: '/#centre' },
     { label: 'Faculty', href: '/#faculty' },
+    { label: 'Videos', href: '/#watch' },
     { label: 'Results', href: '/#results' },
     { label: 'Blog', href: '/blog/' },
     { label: 'Contact', href: '/#contact' },

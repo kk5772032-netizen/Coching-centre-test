@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Single-page site, so there is one entry. Update <lastmod> when the page
+     changes materially (new batch, new results). If you migrate to the Astro
+     version in astro-site/, delete this file — Astro generates its own. -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://www.shikharacademy.in/</loc>
+    <lastmod>2026-08-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+</urlset>

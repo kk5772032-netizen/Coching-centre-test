@@ -835,3 +835,60 @@ body{padding-bottom:60px}          /* room for the sticky bar on mobile */
   @keyframes vtOut{to{opacity:0}}
   @keyframes vtIn{from{opacity:0; transform:translateY(8px)} to{opacity:1; transform:none}}
 }
+
+/* ==========================================================================
+   21. MAP FACADE + DEMO VIDEOS
+   Both are "facades": a cheap local placeholder that only pulls the heavy
+   third-party embed once the visitor actually asks for it. A Google Maps
+   iframe is several hundred KB and a YouTube embed roughly 900 KB — on a 4G
+   connection that is the difference between a usable page and a stalled one.
+   ========================================================================== */
+.map{position:relative}
+.map__load{
+  display:block; width:100%; padding:0; border:0; background:none; cursor:pointer;
+  position:relative; text-align:center; color:var(--navy);
+}
+.map__art{display:block; width:100%; height:auto; aspect-ratio:4/3; object-fit:cover}
+.map__cta{
+  position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);
+  display:inline-flex; align-items:center; gap:9px; white-space:nowrap;
+  background:var(--paper); color:var(--navy); font-weight:700; font-size:16px;
+  padding:13px 22px; border-radius:999px; box-shadow:0 6px 20px rgba(18,38,63,.28);
+  border:1.5px solid var(--navy); min-height:48px;
+  transition:transform .15s ease, background-color .15s ease;
+}
+.map__load:hover .map__cta{background:var(--navy); color:#fff}
+.map__load:active .map__cta{transform:translate(-50%,-50%) scale(.96)}
+.map__note{
+  position:absolute; left:0; right:0; bottom:12px;
+  font-size:12.5px; color:#5c6657; text-shadow:0 1px 0 rgba(255,255,255,.7);
+}
+
+.videos{display:grid; gap:var(--s3)}
+.video{
+  background:rgba(255,255,255,.055); border:1px solid rgba(255,255,255,.13);
+  border-radius:var(--radius); overflow:hidden;
+}
+.video__btn{
+  display:block; width:100%; padding:0; border:0; background:none; cursor:pointer;
+  position:relative; line-height:0;
+}
+.video__poster{display:block; width:100%; height:auto; aspect-ratio:16/9; object-fit:cover}
+.video__play{
+  position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);
+  width:62px; height:62px; border-radius:50%; background:rgba(109,31,40,.94);
+  display:grid; place-items:center; color:#fff;
+  box-shadow:0 6px 22px rgba(0,0,0,.4); transition:transform .16s ease, background-color .16s ease;
+}
+.video__btn:hover .video__play{background:#8a2733; transform:translate(-50%,-50%) scale(1.07)}
+.video__body{padding:var(--s2) var(--s2) var(--s3); line-height:1.5}
+.video__title{font-family:var(--font-head); font-size:17px; font-weight:700; color:#fff; margin:0 0 4px}
+.video__meta{font-size:14px; color:#b9c8d8; margin:0}
+.video iframe{width:100%; aspect-ratio:16/9; border:0; display:block}
+.video__soon{
+  display:inline-block; margin-top:6px; font-size:12px; font-weight:700;
+  letter-spacing:.09em; text-transform:uppercase; color:var(--amber-light);
+}
+@media (min-width:768px){
+  .videos{grid-template-columns:repeat(3,1fr)}
+}

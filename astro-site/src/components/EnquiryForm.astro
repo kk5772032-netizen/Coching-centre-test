@@ -27,7 +27,8 @@ const bullets = [
 
     <div class="reveal">
       <form class="form" id="enquiryForm" novalidate data-wa={site.whatsapp}
-            data-institute={site.name} data-course={presetCourse ?? ''}>
+            data-institute={site.name} data-course={presetCourse ?? ''}
+            data-endpoint={site.leadEndpoint}>
         <h3>Book your free demo</h3>
         <p class="form__note">Takes 30 seconds. Opens WhatsApp with your details filled in.</p>
 
@@ -127,6 +128,24 @@ const bullets = [
     const wa = form.dataset.wa!;
     const institute = form.dataset.institute!;
     const presetCourse = form.dataset.course || '';
+    const endpoint = form.dataset.endpoint || '';
+
+    /* Fire-and-forget lead logging. sendBeacon survives navigation and avoids
+       a CORS preflight that Apps Script would reject; we never await it,
+       because the student must not wait on our record-keeping. */
+    const sendLead = (data: Record<string, string>) => {
+      if (!endpoint) return false;
+      try {
+        const body = new URLSearchParams(data).toString();
+        const blob = new Blob([body], { type: 'application/x-www-form-urlencoded' });
+        if (navigator.sendBeacon?.(endpoint, blob)) return true;
+        fetch(endpoint, {
+          method: 'POST', mode: 'no-cors', keepalive: true,
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body,
+        }).catch(() => {});
+        return true;
+      } catch { return false; }
+    };
 
     const val = (id: string) => (document.getElementById(id) as HTMLInputElement).value.trim();
     const setInvalid = (id: string, invalid: boolean) => {
@@ -165,6 +184,14 @@ const bullets = [
       if (presetCourse) lines.push(`Batch: ${presetCourse}`);
       if (message) lines.push(`Message: ${message}`);
       lines.push('', '(Sent from the website)');
+
+      /* Log FIRST — this is the point: if the student never presses send in
+         WhatsApp, the institute still has their number. */
+      const logged = sendLead({
+        name, mobile, exam, status, timing, message,
+        course: presetCourse, page: location.pathname, opened: 'true',
+      });
+      window.track?.('enquiry_submit', { exam, timing, logged: logged ? 'yes' : 'no' });
 
       const url = `https://wa.me/${wa}?text=${encodeURIComponent(lines.join('\n'))}`;
       successLink.href = url;

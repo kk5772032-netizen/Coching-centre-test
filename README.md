@@ -63,6 +63,9 @@ the site goes live, especially the result claims.
   terms (₹1,000 admin charge, 7/21-day windows, 10% sibling discount). Confirm these
   match what the institute actually offers, or the FAQ becomes a promise it can't keep.
 - **Domain in the footer copyright line.**
+- **`og.png`** — the link-preview image is generated with the placeholder name
+  and the invented "47 selections" claim on it. Regenerate it once the real
+  numbers are known; it is what people see when the link is shared on WhatsApp.
 
 ---
 
@@ -109,6 +112,59 @@ the page — every `tel:`, `mailto:` and `wa.me` link is rebuilt on load. Becaus
 the page must work without JavaScript, those values are *also* hardcoded in the
 HTML as defaults. If you change one in `CONFIG`, search the file for the old
 value and update the visible text too.
+
+---
+
+## 2b. Two things to switch on before launch
+
+Both are wired up and switched **off** by default, so the site works either
+way — but leaving them off is leaving money on the table.
+
+### Lead capture (do this first)
+
+Without it, a student who fills the form but never presses send in WhatsApp is
+lost completely. With it, every enquiry lands in a Google Sheet the moment the
+form is submitted.
+
+Full setup steps are at the top of [`lead-capture/Code.gs`](lead-capture/Code.gs)
+— about 10 minutes, no server, no cost. It must be deployed from the *client's*
+Google account so the sheet lives in their Drive. Then paste the web-app URL
+into `CONFIG`:
+
+```js
+leadEndpoint: "https://script.google.com/macros/s/AKfycb.../exec",
+```
+
+### Analytics
+
+```js
+analytics: {
+  provider: "plausible",          // or "umami" / "ga4" / "" for none
+  domain:   "shikharacademy.in",
+  siteId:   ""                    // GA4 measurement ID, or Umami website ID
+}
+```
+
+Nothing third-party is loaded while `provider` is `""`. Plausible and Umami are
+~1 KB against GA4's ~50 KB, which matters on the connections these visitors are
+using, and neither needs a cookie banner.
+
+Events tracked automatically: `whatsapp_click` (with which button — hero, course
+card, float or mobile bar), `call_click`, `enquiry_submit`, `video_play`,
+`map_load`.
+
+### Demo lecture videos
+
+```js
+videos: [
+  { id: "dQw4w9WgXcQ", title: "...", teacher: "...", length: "8 min" }
+]
+```
+
+`id` is the part after `v=` in a YouTube URL. Leave it empty and the card shows
+"clip coming soon" instead of a play button that does nothing; empty the whole
+list and the section disappears. Nothing is requested from YouTube until
+someone taps play.
 
 ---
 

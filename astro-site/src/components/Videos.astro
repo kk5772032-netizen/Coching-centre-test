@@ -1,0 +1,76 @@
+---
+/* Demo lecture clips as a "facade": a local SVG poster stands in until the
+   visitor taps play, at which point the YouTube iframe is injected. A normal
+   embed costs roughly 900 KB per video before anyone watches anything.
+
+   Add YouTube IDs in site.config.ts -> videos. An empty list hides the
+   section, and an entry with no id renders as "clip coming soon" rather than
+   a play button that does nothing. */
+import { site } from '../site.config';
+
+const videos = site.videos.filter(Boolean);
+---
+{videos.length > 0 && (
+  <section class="section band-navy" id="watch">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="eyebrow">Watch before you decide</p>
+        <h2>See a real class</h2>
+        <p class="lede">Unedited clips from actual running batches — not a promotional film. If the teaching style suits you, come for a free demo.</p>
+      </div>
+
+      <div class="videos" id="videoGrid">
+        {videos.map((v, i) => (
+          <div class="video reveal">
+            {v.id ? (
+              <button class="video__btn" type="button" data-yt={v.id} aria-label={`Play: ${v.title}`}>
+                <svg class="video__poster" viewBox="0 0 320 180" role="img" aria-label="Video thumbnail">
+                  <rect width="320" height="180" fill={i % 2 ? '#1d3a5c' : '#16304f'} />
+                  <rect x="30" y="26" width="150" height="86" rx="4" fill="#f4f2ec" />
+                  <g stroke="#8fa0b3" stroke-width="5" stroke-linecap="round"><path d="M46 50h84M46 68h108M46 86h64" /></g>
+                  <g stroke="#e0901c" stroke-width="5" stroke-linecap="round"><path d="M46 102h56" /></g>
+                  <circle cx="236" cy="74" r="20" fill="#6d1f28" />
+                  <path d="M206 130a30 30 0 0 1 60 0z" fill="#6d1f28" />
+                </svg>
+                <span class="video__play" aria-hidden="true">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z" /></svg>
+                </span>
+              </button>
+            ) : (
+              <div class="video__btn" style="cursor:default">
+                <svg class="video__poster" viewBox="0 0 320 180" role="img" aria-label="Video thumbnail placeholder">
+                  <rect width="320" height="180" fill={i % 2 ? '#1d3a5c' : '#16304f'} />
+                  <rect x="30" y="26" width="150" height="86" rx="4" fill="#f4f2ec" />
+                  <g stroke="#8fa0b3" stroke-width="5" stroke-linecap="round"><path d="M46 50h84M46 68h108M46 86h64" /></g>
+                  <g stroke="#e0901c" stroke-width="5" stroke-linecap="round"><path d="M46 102h56" /></g>
+                  <circle cx="236" cy="74" r="20" fill="#6d1f28" />
+                  <path d="M206 130a30 30 0 0 1 60 0z" fill="#6d1f28" />
+                </svg>
+              </div>
+            )}
+            <div class="video__body">
+              <p class="video__title">{v.title}</p>
+              <p class="video__meta">{v.teacher} &middot; {v.length}</p>
+              {!v.id && <span class="video__soon">Clip coming soon</span>}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+)}
+
+<script>
+  document.getElementById('videoGrid')?.addEventListener('click', (e) => {
+    const btn = (e.target as HTMLElement).closest<HTMLElement>('[data-yt]');
+    if (!btn) return;
+    const id = btn.getAttribute('data-yt')!;
+    const frame = document.createElement('iframe');
+    frame.src = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0`;
+    frame.title = btn.getAttribute('aria-label') || 'Demo lecture';
+    frame.allow = 'accelerometer; autoplay; encrypted-media; picture-in-picture';
+    frame.allowFullscreen = true;
+    btn.replaceWith(frame);
+    window.track?.('video_play', { id });
+  });
+</script>

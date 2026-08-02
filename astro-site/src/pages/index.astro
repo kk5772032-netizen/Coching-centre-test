@@ -8,6 +8,7 @@ import CourseCard from '../components/CourseCard.astro';
 import WhyUs from '../components/WhyUs.astro';
 import Gallery from '../components/Gallery.astro';
 import FacultyCard from '../components/FacultyCard.astro';
+import Videos from '../components/Videos.astro';
 import Results from '../components/Results.astro';
 import Testimonials from '../components/Testimonials.astro';
 import EnquiryForm from '../components/EnquiryForm.astro';
@@ -63,6 +64,7 @@ const feeRange = `₹${Math.min(...fees).toLocaleString('en-IN')} – ₹${Math.
     </div>
   </section>
 
+  <Videos />
   <Results />
   <Testimonials />
   <EnquiryForm />

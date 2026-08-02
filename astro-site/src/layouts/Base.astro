@@ -84,7 +84,7 @@ const favicon = `data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' view
   {schema && <script type="application/ld+json" set:html={JSON.stringify(schema)} />}
 </head>
 
-<body class="no-js">
+<body class="no-js" data-analytics={JSON.stringify(site.analytics)}>
   <a class="skip" href="#main">Skip to main content</a>
   <div class="progress" aria-hidden="true"><div class="progress__bar" id="progressBar"></div></div>
   <Header />
@@ -98,6 +98,55 @@ const favicon = `data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' view
     // Progressive enhancement only — every bit of content above renders
     // as static HTML at build time and works with this script blocked.
     document.body.classList.remove('no-js');
+
+    /* --- Analytics ------------------------------------------------------
+       Nothing third-party is loaded unless a provider is configured, so the
+       default build ships zero external JavaScript.                       */
+    const cfg = JSON.parse(document.body.dataset.analytics || '{}');
+    if (cfg.provider) {
+      const sc = document.createElement('script');
+      sc.defer = true;
+      if (cfg.provider === 'plausible') {
+        sc.src = cfg.src || 'https://plausible.io/js/script.js';
+        sc.setAttribute('data-domain', cfg.domain);
+        document.head.appendChild(sc);
+      } else if (cfg.provider === 'umami') {
+        sc.src = cfg.src;
+        sc.setAttribute('data-website-id', cfg.siteId);
+        document.head.appendChild(sc);
+      } else if (cfg.provider === 'ga4') {
+        sc.src = `https://www.googletagmanager.com/gtag/js?id=${cfg.siteId}`;
+        (window as any).dataLayer = (window as any).dataLayer || [];
+        (window as any).gtag = function () { (window as any).dataLayer.push(arguments); };
+        (window as any).gtag('js', new Date());
+        (window as any).gtag('config', cfg.siteId);
+        document.head.appendChild(sc);
+      }
+    }
+
+    /* Global so other component scripts can report events. Safe no-op when
+       analytics is switched off. */
+    window.track = (name, props) => {
+      try {
+        const p = cfg.provider;
+        if (p === 'plausible' && (window as any).plausible) (window as any).plausible(name, { props: props || {} });
+        else if (p === 'umami' && (window as any).umami) (window as any).umami.track(name, props || {});
+        else if (p === 'ga4' && (window as any).gtag) (window as any).gtag('event', name, props || {});
+      } catch { /* analytics must never break the page */ }
+    };
+
+    // Outbound click tracking: which CTA actually starts conversations.
+    document.querySelectorAll('a[href^="https://wa.me/"]').forEach((a) => {
+      a.addEventListener('click', () => window.track?.('whatsapp_click', {
+        source: a.closest('.course') ? 'course_card'
+              : a.classList.contains('wa-float') ? 'float'
+              : a.closest('.mobile-bar') ? 'mobile_bar'
+              : a.closest('.hero') ? 'hero' : 'other',
+      }));
+    });
+    document.querySelectorAll('a[href^="tel:"]').forEach((a) => {
+      a.addEventListener('click', () => window.track?.('call_click', {}));
+    });
 
     const menuBtn = document.getElementById('menuBtn');
     const mobileNav = document.getElementById('mobileNav');
