@@ -26,6 +26,7 @@ the site goes live, especially the result claims.
 | Geo coordinates | 28.7062, 77.2103 | JSON-LD `geo` |
 | **All result claims** | 47 selections, AIR 61, 28% selection rate, 310+ total, 4,200+ students | Hero proof panel, Results section stats |
 | **All topper names + ranks** | Deepak Kumar AIR 61, Priya Nautiyal AIR 143, Mohd Arif AIR 208, Ritu Chauhan, Sandeep Rathi AIR 402, Neha Bisht | Results section (6 cards) |
+| Facility claims | Five classrooms, reading room open till 9 PM, separate test hall | "Inside the centre" section |
 | **All faculty** | Rajeev Ranjan, Sunita Rawat, Amit Kumar Yadav, Praveen Sharma — names, credentials, quotes | Faculty section (4 cards) |
 | **All testimonials** | 4 quotes | Testimonials section |
 | Google rating | 4.7★ / 312 reviews | Hero trust strip, JSON-LD `aggregateRating` |
@@ -37,9 +38,11 @@ the site goes live, especially the result claims.
 
 ### Also replace
 
-- **Faculty and topper photos** — currently inline SVG placeholders showing initials.
-  Swap each `<svg>…</svg>` for `<img src="photos/name.jpg" alt="…" width="92" height="92">`.
-  Keep the aspect ratio: 1:1 for faculty, roughly 230×180 for toppers.
+- **All photographs** — every image on the page is an illustrated SVG placeholder.
+  See `photos/README.md` for the exact list of files to supply, the sizes, and
+  the swap instructions. In short: faculty portraits 1:1, topper cards ~230×180,
+  centre gallery 4:3. Search `index.html` for `HOW TO PUT` to find the three
+  instruction blocks.
 - **Google Map** — the iframe currently points at the Mukherjee Nagar area, not a
   specific building. Get the real one from Google Maps → Share → *Embed a map* →
   copy the `src`. Update the "Get Directions" link too.
@@ -126,7 +129,14 @@ slower than a CDN, needs renewal management, and buys nothing for a static page.
 
 ---
 
-## Notes on two deliberate choices
+## Notes on three deliberate choices
+
+- **Every image is an illustrated SVG, not a photograph.** No real photos were
+  available, and putting stock photos of strangers under named toppers would
+  fabricate exactly the records that the Consumer Protection Act 2019 and ASCI's
+  education guidelines prohibit. The illustrations are unmistakably drawings, so
+  they make no false claim while the client gathers real photos — and every slot
+  is sized and commented to take an `<img>` drop-in. See `photos/README.md`.
 
 - **Icons are inline SVG, not a CDN icon font.** The brief allowed one icon CDN,
   but an icon font is an extra blocking request and 40–70 KB for the handful of

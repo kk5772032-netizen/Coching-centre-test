@@ -389,6 +389,34 @@ section[id],div[id]{scroll-margin-top:84px}
 .why__item p{color:#c2d0de; font-size:15.5px; margin:0}
 
 /* ==========================================================================
+   8b. GALLERY — full-bleed horizontal scroll strip, breaks the section rhythm
+   ========================================================================== */
+.gallery{background:#f3ede3}
+.gallery__strip{
+  display:flex; gap:var(--s2); overflow-x:auto; scroll-snap-type:x mandatory;
+  -webkit-overflow-scrolling:touch; scrollbar-width:thin;
+  padding:0 var(--s3) var(--s2);
+  /* on wide screens the first card lines up with the container, but the row
+     still bleeds off the right edge so it reads as scrollable.
+     scroll-padding must match, or snapping scrolls straight past the inset. */
+  --gutter:max(var(--s3), calc((100% - var(--maxw)) / 2 + var(--s3)));
+  padding-inline-start:var(--gutter);
+  scroll-padding-inline-start:var(--gutter);
+}
+.gallery__strip::-webkit-scrollbar{height:6px}
+.gallery__strip::-webkit-scrollbar-thumb{background:#c9bda8; border-radius:3px}
+.gallery__strip > li{flex:0 0 268px; scroll-snap-align:start; display:flex}
+.gallery figure{
+  margin:0; width:100%; display:flex; flex-direction:column;
+  background:var(--paper); border:1px solid var(--line); border-radius:var(--radius);
+  overflow:hidden; box-shadow:var(--shadow);
+}
+.gallery figure svg,.gallery figure img{width:100%; aspect-ratio:4/3; object-fit:cover; display:block}
+.gallery figcaption{padding:14px var(--s2); font-size:14.5px; color:var(--muted); line-height:1.45}
+.gallery figcaption b{display:block; color:var(--navy); font-size:16px; font-family:var(--font-head); margin-bottom:2px}
+.gallery__note{font-size:13.5px; font-style:italic; color:var(--muted); margin:var(--s2) 0 0}
+
+/* ==========================================================================
    9. FACULTY
    ========================================================================== */
 .faculty{display:grid; gap:var(--s3)}
@@ -639,6 +667,7 @@ body{padding-bottom:60px}          /* room for the sticky bar on mobile */
   .mobile-nav{display:none !important}
   .cards{grid-template-columns:repeat(3,1fr)}
   .why{grid-template-columns:repeat(3,1fr)}
+  .gallery__strip > li{flex-basis:340px}
   .hero__grid{grid-template-columns:1.25fr .9fr; align-items:center; gap:var(--s6)}
   .hero{padding-block:var(--s8)}
   .quotes{grid-template-columns:repeat(4,1fr)}
@@ -674,6 +703,7 @@ body{padding-bottom:60px}          /* room for the sticky bar on mobile */
     <nav class="nav" aria-label="Main">
       <ul>
         <li><a href="#courses">Courses</a></li>
+        <li><a href="#centre">Centre</a></li>
         <li><a href="#faculty">Faculty</a></li>
         <li><a href="#results">Results</a></li>
         <li><a href="#fees">Fees</a></li>
@@ -695,6 +725,7 @@ body{padding-bottom:60px}          /* room for the sticky bar on mobile */
   <nav class="mobile-nav" id="mobileNav" aria-label="Mobile">
     <div class="wrap">
       <a href="#courses">Courses</a>
+      <a href="#centre">Centre</a>
       <a href="#faculty">Faculty</a>
       <a href="#results">Results</a>
       <a href="#fees">Fees</a>
@@ -706,6 +737,7 @@ body{padding-bottom:60px}          /* room for the sticky bar on mobile */
     <nav class="mobile-nav is-open" aria-label="Main (no JavaScript)">
       <div class="wrap">
         <a href="#courses">Courses</a>
+        <a href="#centre">Centre</a>
         <a href="#faculty">Faculty</a>
         <a href="#results">Results</a>
         <a href="#fees">Fees</a>
@@ -983,9 +1015,230 @@ body{padding-bottom:60px}          /* room for the sticky bar on mobile */
 </section>
 
 <!-- ==========================================================================
+     SECTION 5b — INSIDE THE CENTRE (photo gallery)
+
+     >>> HOW TO PUT YOUR REAL PHOTOS IN <<<
+     Each figure below holds an illustrated placeholder. Replace the whole
+     <svg>...</svg> block with one line:
+
+       <img src="photos/classroom.jpg" alt="Morning batch classroom at Shikhar Academy"
+            width="400" height="300" loading="lazy">
+
+     Shoot or crop every photo to 4:3 (e.g. 1200x900), save as JPG under 120 KB.
+     Keep the width/height attributes — they stop the page jumping while the
+     photo loads on a slow connection.
+     ========================================================================== -->
+<section class="section section--tight gallery" id="centre">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow">See it before you come</p>
+      <h2>Inside the centre</h2>
+      <p class="lede">Two floors on Outram Lines — five classrooms, a reading room open till 9 PM, and a separate test hall. Walk in any working day and see it yourself.</p>
+    </div>
+  </div>
+
+  <ul class="gallery__strip reveal">
+
+    <!-- Photo 1 — building exterior -->
+    <li>
+      <figure>
+        <svg viewBox="0 0 400 300" role="img" aria-label="Illustration of the institute building: a three-storey commercial block with the signboard above the entrance">
+          <rect width="400" height="300" fill="#dfe8f1"/>
+          <rect x="0" y="118" width="66" height="182" fill="#c3d0de"/>
+          <rect x="336" y="96" width="64" height="204" fill="#c3d0de"/>
+          <rect x="12" y="140" width="18" height="22" fill="#aebdcd"/><rect x="38" y="140" width="18" height="22" fill="#aebdcd"/>
+          <rect x="348" y="120" width="18" height="22" fill="#aebdcd"/><rect x="374" y="120" width="18" height="22" fill="#aebdcd"/>
+          <rect x="66" y="56" width="270" height="244" fill="#f4f1ea"/>
+          <rect x="66" y="56" width="270" height="9" fill="#12263f"/>
+          <rect x="88" y="74" width="226" height="36" rx="4" fill="#12263f"/>
+          <rect x="97" y="82" width="20" height="20" rx="4" fill="#e0901c"/>
+          <rect x="126" y="84" width="122" height="7" rx="3.5" fill="#f5b843"/>
+          <rect x="126" y="96" width="78" height="5" rx="2.5" fill="#7f93a9"/>
+          <g fill="#b9cadb">
+            <rect x="88" y="128" width="46" height="40" rx="2"/><rect x="146" y="128" width="46" height="40" rx="2"/>
+            <rect x="204" y="128" width="46" height="40" rx="2"/><rect x="262" y="128" width="46" height="40" rx="2"/>
+            <rect x="88" y="182" width="46" height="40" rx="2"/><rect x="146" y="182" width="46" height="40" rx="2"/>
+            <rect x="204" y="182" width="46" height="40" rx="2"/><rect x="262" y="182" width="46" height="40" rx="2"/>
+          </g>
+          <g stroke="#f4f1ea" stroke-width="2">
+            <path d="M111 128v40M88 148h46M169 128v40M146 148h46M227 128v40M204 148h46M285 128v40M262 148h46"/>
+            <path d="M111 182v40M88 202h46M169 182v40M146 202h46M227 182v40M204 202h46M285 182v40M262 202h46"/>
+          </g>
+          <rect x="66" y="234" width="270" height="66" fill="#e8e2d6"/>
+          <rect x="158" y="242" width="86" height="58" fill="#12263f"/>
+          <rect x="164" y="248" width="34" height="52" fill="#1d3a5c"/><rect x="204" y="248" width="34" height="52" fill="#1d3a5c"/>
+          <rect x="96" y="250" width="48" height="30" rx="2" fill="#c3cedb"/>
+          <rect x="258" y="250" width="48" height="30" rx="2" fill="#c3cedb"/>
+          <rect x="344" y="228" width="8" height="60" fill="#8b7f6d"/>
+          <circle cx="348" cy="214" r="24" fill="#5e8a55"/><circle cx="330" cy="228" r="16" fill="#6b9a61"/><circle cx="366" cy="228" r="15" fill="#527a4a"/>
+          <rect x="0" y="288" width="400" height="12" fill="#aab4c0"/>
+        </svg>
+        <figcaption><b>The building</b>2nd floor, Batra Complex — above Punjab National Bank</figcaption>
+      </figure>
+    </li>
+
+    <!-- Photo 2 — classroom -->
+    <li>
+      <figure>
+        <svg viewBox="0 0 400 300" role="img" aria-label="Illustration of a classroom: a teacher at the whiteboard with students seated at desks in rows">
+          <rect width="400" height="300" fill="#eef1f5"/>
+          <rect x="0" y="0" width="400" height="196" fill="#e4e9f0"/>
+          <rect x="52" y="34" width="212" height="112" rx="4" fill="#fbfbf9" stroke="#c6d0dc" stroke-width="3"/>
+          <g stroke="#12263f" stroke-width="4" stroke-linecap="round" opacity=".55">
+            <path d="M70 60h84M70 78h120M70 96h64"/>
+          </g>
+          <g stroke="#e0901c" stroke-width="4" stroke-linecap="round"><path d="M70 118h100"/></g>
+          <rect x="290" y="44" width="72" height="52" rx="3" fill="#12263f"/>
+          <rect x="298" y="52" width="56" height="36" rx="2" fill="#7f93a9"/>
+          <circle cx="288" cy="128" r="17" fill="#6d1f28"/>
+          <path d="M262 196a26 26 0 0 1 52 0z" fill="#6d1f28"/>
+          <rect x="0" y="196" width="400" height="104" fill="#d9cfc0"/>
+          <g fill="#12263f">
+            <circle cx="72" cy="188" r="15"/><path d="M50 232a22 22 0 0 1 44 0z"/>
+            <circle cx="164" cy="188" r="15"/><path d="M142 232a22 22 0 0 1 44 0z"/>
+            <circle cx="256" cy="188" r="15"/><path d="M234 232a22 22 0 0 1 44 0z"/>
+          </g>
+          <g fill="#b6a893">
+            <rect x="34" y="230" width="80" height="10" rx="2"/><rect x="40" y="240" width="8" height="30"/><rect x="100" y="240" width="8" height="30"/>
+            <rect x="126" y="230" width="80" height="10" rx="2"/><rect x="132" y="240" width="8" height="30"/><rect x="192" y="240" width="8" height="30"/>
+            <rect x="218" y="230" width="80" height="10" rx="2"/><rect x="224" y="240" width="8" height="30"/><rect x="284" y="240" width="8" height="30"/>
+          </g>
+          <g fill="#1d3a5c" opacity=".85">
+            <circle cx="330" cy="196" r="13"/><path d="M311 236a19 19 0 0 1 38 0z"/>
+            <rect x="304" y="234" width="66" height="9" rx="2" fill="#b6a893"/>
+            <rect x="309" y="243" width="7" height="27" fill="#b6a893"/><rect x="358" y="243" width="7" height="27" fill="#b6a893"/>
+          </g>
+        </svg>
+        <figcaption><b>Classroom</b>Batch size capped at 40 — every seat sees the board</figcaption>
+      </figure>
+    </li>
+
+    <!-- Photo 3 — reading room -->
+    <li>
+      <figure>
+        <svg viewBox="0 0 400 300" role="img" aria-label="Illustration of the reading room: bookshelves along the wall with students at study tables">
+          <rect width="400" height="300" fill="#f2ede3"/>
+          <rect x="0" y="0" width="400" height="182" fill="#e9e1d2"/>
+          <rect x="24" y="26" width="150" height="150" rx="3" fill="#8b6f4e"/>
+          <g fill="#f2ede3"><rect x="30" y="32" width="138" height="4"/><rect x="30" y="72" width="138" height="4"/><rect x="30" y="112" width="138" height="4"/><rect x="30" y="152" width="138" height="4"/></g>
+          <g>
+            <rect x="34" y="40" width="9" height="32" fill="#6d1f28"/><rect x="45" y="44" width="8" height="28" fill="#12263f"/>
+            <rect x="55" y="38" width="10" height="34" fill="#e0901c"/><rect x="67" y="46" width="8" height="26" fill="#5e8a55"/>
+            <rect x="77" y="41" width="9" height="31" fill="#1d3a5c"/><rect x="88" y="45" width="8" height="27" fill="#96590c"/>
+            <rect x="34" y="82" width="8" height="30" fill="#12263f"/><rect x="44" y="78" width="10" height="34" fill="#6d1f28"/>
+            <rect x="56" y="84" width="8" height="28" fill="#e0901c"/><rect x="66" y="80" width="9" height="32" fill="#5e8a55"/>
+            <rect x="77" y="86" width="8" height="26" fill="#1d3a5c"/><rect x="87" y="82" width="10" height="30" fill="#6d1f28"/>
+            <rect x="34" y="120" width="9" height="32" fill="#e0901c"/><rect x="45" y="124" width="8" height="28" fill="#12263f"/>
+            <rect x="55" y="118" width="10" height="34" fill="#5e8a55"/><rect x="67" y="126" width="8" height="26" fill="#6d1f28"/>
+          </g>
+          <rect x="212" y="34" width="160" height="96" rx="4" fill="#cfe0ee" stroke="#b3a68f" stroke-width="5"/>
+          <path d="M212 82h160M292 34v96" stroke="#b3a68f" stroke-width="5"/>
+          <rect x="0" y="182" width="400" height="118" fill="#ded3c0"/>
+          <rect x="36" y="206" width="150" height="11" rx="3" fill="#8b6f4e"/>
+          <rect x="44" y="217" width="9" height="46" fill="#8b6f4e"/><rect x="169" y="217" width="9" height="46" fill="#8b6f4e"/>
+          <rect x="214" y="206" width="150" height="11" rx="3" fill="#8b6f4e"/>
+          <rect x="222" y="217" width="9" height="46" fill="#8b6f4e"/><rect x="347" y="217" width="9" height="46" fill="#8b6f4e"/>
+          <g fill="#12263f"><circle cx="88" cy="168" r="14"/><path d="M68 206a20 20 0 0 1 40 0z"/></g>
+          <g fill="#6d1f28"><circle cx="266" cy="168" r="14"/><path d="M246 206a20 20 0 0 1 40 0z"/></g>
+          <g fill="#1d3a5c"><circle cx="330" cy="172" r="12"/><path d="M313 206a17 17 0 0 1 34 0z"/></g>
+          <g fill="#fbfbf9"><rect x="120" y="198" width="34" height="8" rx="1"/><rect x="298" y="198" width="34" height="8" rx="1"/></g>
+          <rect x="188" y="176" width="6" height="30" fill="#54606f"/>
+          <path d="M180 176h22l-6-16h-10z" fill="#e0901c"/>
+        </svg>
+        <figcaption><b>Reading room</b>Open till 9 PM, including Sundays</figcaption>
+      </figure>
+    </li>
+
+    <!-- Photo 4 — test hall -->
+    <li>
+      <figure>
+        <svg viewBox="0 0 400 300" role="img" aria-label="Illustration of the test hall: single desks arranged in a grid for weekly mock tests">
+          <rect width="400" height="300" fill="#eceff3"/>
+          <rect x="0" y="0" width="400" height="150" fill="#e1e6ec"/>
+          <circle cx="200" cy="42" r="22" fill="#fbfbf9" stroke="#12263f" stroke-width="4"/>
+          <path d="M200 30v13l9 6" stroke="#12263f" stroke-width="4" stroke-linecap="round" fill="none"/>
+          <rect x="36" y="24" width="106" height="42" rx="3" fill="#12263f"/>
+          <g stroke="#f5b843" stroke-width="4" stroke-linecap="round"><path d="M50 40h60M50 52h40"/></g>
+          <rect x="270" y="26" width="94" height="40" rx="3" fill="#fbfbf9" stroke="#c6d0dc" stroke-width="3"/>
+          <g stroke="#8fa0b3" stroke-width="3" stroke-linecap="round"><path d="M282 40h50M282 52h34"/></g>
+          <rect x="0" y="150" width="400" height="150" fill="#d8dde4"/>
+          <g fill="#12263f">
+            <circle cx="70" cy="150" r="12"/><path d="M53 184a17 17 0 0 1 34 0z"/>
+            <circle cx="200" cy="150" r="12"/><path d="M183 184a17 17 0 0 1 34 0z"/>
+            <circle cx="330" cy="150" r="12"/><path d="M313 184a17 17 0 0 1 34 0z"/>
+          </g>
+          <g fill="#a7b1bd">
+            <rect x="40" y="182" width="60" height="8" rx="2"/><rect x="45" y="190" width="6" height="24"/><rect x="89" y="190" width="6" height="24"/>
+            <rect x="170" y="182" width="60" height="8" rx="2"/><rect x="175" y="190" width="6" height="24"/><rect x="219" y="190" width="6" height="24"/>
+            <rect x="300" y="182" width="60" height="8" rx="2"/><rect x="305" y="190" width="6" height="24"/><rect x="349" y="190" width="6" height="24"/>
+          </g>
+          <g fill="#1d3a5c">
+            <circle cx="122" cy="212" r="14"/><path d="M102 252a20 20 0 0 1 40 0z"/>
+            <circle cx="278" cy="212" r="14"/><path d="M258 252a20 20 0 0 1 40 0z"/>
+          </g>
+          <g fill="#95a0ad">
+            <rect x="86" y="250" width="72" height="9" rx="2"/><rect x="92" y="259" width="7" height="28"/><rect x="146" y="259" width="7" height="28"/>
+            <rect x="242" y="250" width="72" height="9" rx="2"/><rect x="248" y="259" width="7" height="28"/><rect x="302" y="259" width="7" height="28"/>
+          </g>
+          <g fill="#fbfbf9"><rect x="104" y="242" width="30" height="8" rx="1"/><rect x="260" y="242" width="30" height="8" rx="1"/></g>
+        </svg>
+        <figcaption><b>Test hall</b>Weekly mocks under real exam conditions</figcaption>
+      </figure>
+    </li>
+
+    <!-- Photo 5 — reception / admission desk -->
+    <li>
+      <figure>
+        <svg viewBox="0 0 400 300" role="img" aria-label="Illustration of the reception desk with the notice board and admission counter">
+          <rect width="400" height="300" fill="#f0ece4"/>
+          <rect x="0" y="0" width="400" height="188" fill="#e6e0d4"/>
+          <rect x="30" y="28" width="132" height="98" rx="4" fill="#5e6b3f"/>
+          <rect x="36" y="34" width="120" height="86" fill="#6f7d4c"/>
+          <g fill="#f4f1e8">
+            <rect x="46" y="44" width="42" height="30" rx="2"/><rect x="96" y="44" width="50" height="22" rx="2"/>
+            <rect x="46" y="82" width="34" height="26" rx="2"/><rect x="88" y="74" width="58" height="34" rx="2"/>
+          </g>
+          <rect x="212" y="34" width="156" height="60" rx="4" fill="#12263f"/>
+          <rect x="222" y="44" width="22" height="22" rx="4" fill="#e0901c"/>
+          <g fill="#f5b843"><rect x="254" y="46" width="96" height="7" rx="3.5"/></g>
+          <g fill="#7f93a9"><rect x="254" y="60" width="62" height="5" rx="2.5"/></g>
+          <g fill="#8fa3b8"><rect x="222" y="76" width="128" height="5" rx="2.5"/></g>
+          <circle cx="286" cy="150" r="19" fill="#6d1f28"/>
+          <path d="M256 202a30 30 0 0 1 60 0z" fill="#6d1f28"/>
+          <rect x="0" y="188" width="400" height="112" fill="#d5c9b4"/>
+          <rect x="150" y="196" width="250" height="14" rx="3" fill="#8b6f4e"/>
+          <rect x="158" y="210" width="242" height="90" fill="#a07f58"/>
+          <g stroke="#8b6f4e" stroke-width="3"><path d="M158 244h242M232 210v90M320 210v90"/></g>
+          <rect x="176" y="176" width="38" height="26" rx="3" fill="#12263f"/>
+          <rect x="181" y="181" width="28" height="16" rx="2" fill="#7f93a9"/>
+          <g fill="#fbfbf9"><rect x="240" y="182" width="40" height="14" rx="2"/><rect x="246" y="176" width="40" height="14" rx="2"/></g>
+          <g fill="#12263f"><circle cx="70" cy="180" r="16"/><path d="M46 224a24 24 0 0 1 48 0z"/></g>
+          <g fill="#1d3a5c"><circle cx="112" cy="188" r="14"/><path d="M91 228a21 21 0 0 1 42 0z"/></g>
+          <rect x="36" y="246" width="8" height="54" fill="#8b6f4e"/>
+          <circle cx="40" cy="238" r="20" fill="#5e8a55"/><circle cx="22" cy="250" r="13" fill="#6b9a61"/><circle cx="58" cy="250" r="12" fill="#527a4a"/>
+        </svg>
+        <figcaption><b>Admission desk</b>Walk in 10 AM – 6 PM, no appointment needed</figcaption>
+      </figure>
+    </li>
+
+  </ul>
+
+  <div class="wrap">
+    <p class="gallery__note reveal">Illustrations shown above are placeholders. Replace them with photographs of the actual centre before going live.</p>
+  </div>
+</section>
+
+<!-- ==========================================================================
      SECTION 6 — FACULTY
-     Replace the initials in each SVG with a real photograph:
-     <img src="photos/rajeev.jpg" alt="Rajeev Ranjan, Quantitative Aptitude faculty" width="92" height="92">
+
+     >>> HOW TO PUT A REAL PHOTO IN <<<
+     Replace the whole <svg>...</svg> inside .teacher__photo with:
+
+       <img src="photos/rajeev.jpg" alt="Rajeev Ranjan, Quantitative Aptitude faculty"
+            width="92" height="92" loading="lazy">
+
+     Crop each portrait square (1:1, e.g. 400x400) — the circle mask does the rest.
+     Use the teacher's own photo with their permission, never a stock photo.
      ========================================================================== -->
 <section class="section" id="faculty">
   <div class="wrap">
@@ -998,7 +1251,7 @@ body{padding-bottom:60px}          /* room for the sticky bar on mobile */
     <div class="faculty">
       <article class="teacher reveal">
         <div class="teacher__photo">
-          <svg viewBox="0 0 92 92" role="img" aria-label="Photograph of Rajeev Ranjan"><rect width="92" height="92" fill="#dde5ee"/><text x="46" y="57" font-family="Georgia,serif" font-size="34" font-weight="700" fill="#12263f" text-anchor="middle">RR</text></svg>
+          <svg viewBox="0 0 92 92" role="img" aria-label="Photo placeholder for Rajeev Ranjan"><rect width="92" height="92" fill="#dde5ee"/><circle cx="46" cy="35" r="15" fill="#12263f"/><path d="M15 92a31 31 0 0 1 62 0z" fill="#12263f"/></svg>
         </div>
         <div>
           <h3>Rajeev Ranjan</h3>
@@ -1010,7 +1263,7 @@ body{padding-bottom:60px}          /* room for the sticky bar on mobile */
 
       <article class="teacher reveal">
         <div class="teacher__photo">
-          <svg viewBox="0 0 92 92" role="img" aria-label="Photograph of Sunita Rawat"><rect width="92" height="92" fill="#e8dfd2"/><text x="46" y="57" font-family="Georgia,serif" font-size="34" font-weight="700" fill="#6d1f28" text-anchor="middle">SR</text></svg>
+          <svg viewBox="0 0 92 92" role="img" aria-label="Photo placeholder for Sunita Rawat"><rect width="92" height="92" fill="#e8dfd2"/><circle cx="46" cy="35" r="15" fill="#6d1f28"/><path d="M15 92a31 31 0 0 1 62 0z" fill="#6d1f28"/></svg>
         </div>
         <div>
           <h3>Sunita Rawat</h3>
@@ -1022,7 +1275,7 @@ body{padding-bottom:60px}          /* room for the sticky bar on mobile */
 
       <article class="teacher reveal">
         <div class="teacher__photo">
-          <svg viewBox="0 0 92 92" role="img" aria-label="Photograph of Amit Kumar Yadav"><rect width="92" height="92" fill="#dde5ee"/><text x="46" y="57" font-family="Georgia,serif" font-size="34" font-weight="700" fill="#12263f" text-anchor="middle">AY</text></svg>
+          <svg viewBox="0 0 92 92" role="img" aria-label="Photo placeholder for Amit Kumar Yadav"><rect width="92" height="92" fill="#dde5ee"/><circle cx="46" cy="35" r="15" fill="#12263f"/><path d="M15 92a31 31 0 0 1 62 0z" fill="#12263f"/></svg>
         </div>
         <div>
           <h3>Amit Kumar Yadav</h3>
@@ -1034,7 +1287,7 @@ body{padding-bottom:60px}          /* room for the sticky bar on mobile */
 
       <article class="teacher reveal">
         <div class="teacher__photo">
-          <svg viewBox="0 0 92 92" role="img" aria-label="Photograph of Praveen Sharma"><rect width="92" height="92" fill="#e8dfd2"/><text x="46" y="57" font-family="Georgia,serif" font-size="34" font-weight="700" fill="#6d1f28" text-anchor="middle">PS</text></svg>
+          <svg viewBox="0 0 92 92" role="img" aria-label="Photo placeholder for Praveen Sharma"><rect width="92" height="92" fill="#e8dfd2"/><circle cx="46" cy="35" r="15" fill="#6d1f28"/><path d="M15 92a31 31 0 0 1 62 0z" fill="#6d1f28"/></svg>
         </div>
         <div>
           <h3>Praveen Sharma</h3>
@@ -1050,6 +1303,15 @@ body{padding-bottom:60px}          /* room for the sticky bar on mobile */
 <!-- ==========================================================================
      SECTION 7 — RESULTS / TOPPERS (maroon band, horizontal scroll on mobile)
      Update the three big numbers and the topper cards after every result.
+
+     >>> HOW TO PUT A REAL PHOTO IN <<<
+     Replace the whole <svg>...</svg> in each card with:
+
+       <img src="photos/toppers/deepak.jpg" alt="Deepak Kumar, AIR 61 in SSC CGL 2024"
+            width="230" height="180" loading="lazy">
+
+     Crop to roughly 230x180 (landscape). Use only photographs of the actual
+     selected student, with their written consent — never a stock photo.
      ========================================================================== -->
 <section class="section band-maroon" id="results">
   <div class="wrap">
@@ -1066,7 +1328,7 @@ body{padding-bottom:60px}          /* room for the sticky bar on mobile */
 
     <ul class="hscroll reveal">
       <li class="topper">
-        <svg viewBox="0 0 230 180" role="img" aria-label="Photograph of Deepak Kumar"><rect width="230" height="180" fill="#eee6da"/><text x="115" y="112" font-family="Georgia,serif" font-size="56" font-weight="700" fill="#6d1f28" text-anchor="middle">DK</text></svg>
+        <svg viewBox="0 0 230 180" role="img" aria-label="Photo placeholder for Deepak Kumar"><rect width="230" height="180" fill="#eee6da"/><circle cx="115" cy="72" r="29" fill="#6d1f28"/><path d="M56 180a59 59 0 0 1 118 0z" fill="#6d1f28"/></svg>
         <div class="topper__body">
           <span class="rank">AIR 61</span>
           <h3>Deepak Kumar</h3>
@@ -1074,7 +1336,7 @@ body{padding-bottom:60px}          /* room for the sticky bar on mobile */
         </div>
       </li>
       <li class="topper">
-        <svg viewBox="0 0 230 180" role="img" aria-label="Photograph of Priya Nautiyal"><rect width="230" height="180" fill="#e2e9f1"/><text x="115" y="112" font-family="Georgia,serif" font-size="56" font-weight="700" fill="#12263f" text-anchor="middle">PN</text></svg>
+        <svg viewBox="0 0 230 180" role="img" aria-label="Photo placeholder for Priya Nautiyal"><rect width="230" height="180" fill="#e2e9f1"/><circle cx="115" cy="72" r="29" fill="#12263f"/><path d="M56 180a59 59 0 0 1 118 0z" fill="#12263f"/></svg>
         <div class="topper__body">
           <span class="rank">AIR 143</span>
           <h3>Priya Nautiyal</h3>
@@ -1082,7 +1344,7 @@ body{padding-bottom:60px}          /* room for the sticky bar on mobile */
         </div>
       </li>
       <li class="topper">
-        <svg viewBox="0 0 230 180" role="img" aria-label="Photograph of Mohd Arif"><rect width="230" height="180" fill="#eee6da"/><text x="115" y="112" font-family="Georgia,serif" font-size="56" font-weight="700" fill="#6d1f28" text-anchor="middle">MA</text></svg>
+        <svg viewBox="0 0 230 180" role="img" aria-label="Photo placeholder for Mohd Arif"><rect width="230" height="180" fill="#eee6da"/><circle cx="115" cy="72" r="29" fill="#6d1f28"/><path d="M56 180a59 59 0 0 1 118 0z" fill="#6d1f28"/></svg>
         <div class="topper__body">
           <span class="rank">AIR 208</span>
           <h3>Mohd Arif</h3>
@@ -1090,7 +1352,7 @@ body{padding-bottom:60px}          /* room for the sticky bar on mobile */
         </div>
       </li>
       <li class="topper">
-        <svg viewBox="0 0 230 180" role="img" aria-label="Photograph of Ritu Chauhan"><rect width="230" height="180" fill="#e2e9f1"/><text x="115" y="112" font-family="Georgia,serif" font-size="56" font-weight="700" fill="#12263f" text-anchor="middle">RC</text></svg>
+        <svg viewBox="0 0 230 180" role="img" aria-label="Photo placeholder for Ritu Chauhan"><rect width="230" height="180" fill="#e2e9f1"/><circle cx="115" cy="72" r="29" fill="#12263f"/><path d="M56 180a59 59 0 0 1 118 0z" fill="#12263f"/></svg>
         <div class="topper__body">
           <span class="rank">Selected</span>
           <h3>Ritu Chauhan</h3>
@@ -1098,7 +1360,7 @@ body{padding-bottom:60px}          /* room for the sticky bar on mobile */
         </div>
       </li>
       <li class="topper">
-        <svg viewBox="0 0 230 180" role="img" aria-label="Photograph of Sandeep Rathi"><rect width="230" height="180" fill="#eee6da"/><text x="115" y="112" font-family="Georgia,serif" font-size="56" font-weight="700" fill="#6d1f28" text-anchor="middle">SR</text></svg>
+        <svg viewBox="0 0 230 180" role="img" aria-label="Photo placeholder for Sandeep Rathi"><rect width="230" height="180" fill="#eee6da"/><circle cx="115" cy="72" r="29" fill="#6d1f28"/><path d="M56 180a59 59 0 0 1 118 0z" fill="#6d1f28"/></svg>
         <div class="topper__body">
           <span class="rank">AIR 402</span>
           <h3>Sandeep Rathi</h3>
@@ -1106,7 +1368,7 @@ body{padding-bottom:60px}          /* room for the sticky bar on mobile */
         </div>
       </li>
       <li class="topper">
-        <svg viewBox="0 0 230 180" role="img" aria-label="Photograph of Neha Bisht"><rect width="230" height="180" fill="#e2e9f1"/><text x="115" y="112" font-family="Georgia,serif" font-size="56" font-weight="700" fill="#12263f" text-anchor="middle">NB</text></svg>
+        <svg viewBox="0 0 230 180" role="img" aria-label="Photo placeholder for Neha Bisht"><rect width="230" height="180" fill="#e2e9f1"/><circle cx="115" cy="72" r="29" fill="#12263f"/><path d="M56 180a59 59 0 0 1 118 0z" fill="#12263f"/></svg>
         <div class="topper__body">
           <span class="rank">Selected</span>
           <h3>Neha Bisht</h3>
@@ -1450,6 +1712,7 @@ body{padding-bottom:60px}          /* room for the sticky bar on mobile */
         <h4>Quick links</h4>
         <ul>
           <li><a href="#courses">Courses &amp; batches</a></li>
+          <li><a href="#centre">Inside the centre</a></li>
           <li><a href="#faculty">Our faculty</a></li>
           <li><a href="#results">Results</a></li>
           <li><a href="#fees">Fee structure</a></li>
