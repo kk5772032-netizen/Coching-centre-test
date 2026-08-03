@@ -182,7 +182,52 @@ someone taps play.
 
 ---
 
-## 3. Hosting and rough annual cost
+## 3. Deploying
+
+`build.sh` + `vercel.json` are already in the repo. One environment variable
+picks which version goes live:
+
+| `SITE` | Publishes |
+|---|---|
+| `single` (default) | the single-file `index.html` |
+| `astro` | the multi-page Astro site |
+
+Only `_site/` is published, so the README, the Apps Script source and
+`preview.html` stay out of the public deploy. Verified: those all 404.
+
+### Vercel
+
+1. [vercel.com/new](https://vercel.com/new) → **Import Git Repository** → pick
+   this repo.
+2. Framework Preset: **Other**. Leave Build Command and Output Directory
+   blank — `vercel.json` sets them (`bash ./build.sh` → `_site`).
+3. **Deploy.** You get `<project>.vercel.app` in about a minute, and every push
+   to the branch redeploys.
+4. For the multi-page version instead: Settings → Environment Variables → add
+   `SITE` = `astro`, then redeploy.
+5. Custom domain: Settings → Domains → add it, then point the registrar at
+   Vercel's nameservers or add the CNAME they show you.
+
+Cost: free tier covers this comfortably. Vercel's free plan is for
+non-commercial use though — for a coaching institute that is charging fees,
+Cloudflare Pages or Netlify are the safer free choice, or Vercel Pro at
+about $20/month.
+
+### Cloudflare Pages / Netlify
+
+Both read the same setup. Netlify picks up `netlify.toml` automatically.
+For Cloudflare Pages: Build command `bash ./build.sh`, Output directory
+`_site`.
+
+### GitHub Pages
+
+`.github/workflows/deploy.yml` is ready. The repo owner has to switch it on
+once: Settings → Pages → Source: **GitHub Actions**. That cannot be enabled
+from a workflow.
+
+---
+
+## 4. Hosting and rough annual cost
 
 **Recommended: Cloudflare Pages or Netlify — free tier.**
 It's one static file. Drag the folder into the dashboard, connect the domain,
